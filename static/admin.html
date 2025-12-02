@@ -27,6 +27,23 @@
       font-size: 12px;
       color: #9ca3af;
     }
+    .toolbar {
+      padding: 10px 16px;
+      background: #020617;
+      border-bottom: 1px solid #1e293b;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .btn-login {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #38bdf8;
+      background: #0ea5e9;
+      color: #0f172a;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 500;
+    }
   </style>
 </head>
 <body>
@@ -37,26 +54,44 @@
     </div>
   </div>
 
-  <!-- Netlify Identity widget (login) -->
+  <div class="toolbar">
+    <button id="loginBtn" class="btn-login">Inloggen als admin</button>
+  </div>
+
+  <!-- Netlify Identity widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
   <!-- Decap / Netlify CMS -->
   <script src="https://unpkg.com/decap-cms-app@^3.0.0/dist/decap-cms-app.js"></script>
 
   <script>
-    // Init Netlify Identity (rechtsonder verschijnt een klein login-icoontje)
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin.html";
-          });
-        }
-      });
-      window.netlifyIdentity.init();
-    }
+    // Init Netlify Identity en koppel aan de knop
+    document.addEventListener("DOMContentLoaded", function () {
+      const btn = document.getElementById("loginBtn");
 
-    // Init CMS met inline config (geen los config.yml nodig)
+      if (!window.netlifyIdentity) {
+        btn.textContent = "Identity niet geladen";
+        btn.disabled = true;
+        return;
+      }
+
+      window.netlifyIdentity.init();
+
+      btn.addEventListener("click", function () {
+        window.netlifyIdentity.open();
+      });
+
+      window.netlifyIdentity.on("login", (user) => {
+        console.log("Ingelogd als:", user.email);
+        // na inloggen gewoon de pagina laten staan; CMS UI wordt ingeladen
+      });
+
+      window.netlifyIdentity.on("logout", () => {
+        console.log("Uitgelogd");
+      });
+    });
+
+    // Init CMS met inline config
     window.CMS.init({
       config: {
         backend: {
