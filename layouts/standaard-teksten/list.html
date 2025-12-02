@@ -1,8 +1,10 @@
 {{ define "title" }}Standaard texten | {{ .Site.Title }}{{ end }}
+
 {{ define "main" }}
   <aside class="sidebar">
     <h3>Main Menu</h3>
     <div id="mainMenu">
+      {{/* Hoofdmenu links, gebruikt dezelfde sections als de rest van de site */}}
       {{ range .Site.Params.mainSections }}
         <a class="sidebar-item{{ if eq $.Section . }} active{{ end }}" href="/{{ . }}/">{{ . }}</a>
       {{ end }}
@@ -24,85 +26,54 @@
     </div>
   </main>
 
-<script>
-const stdSections = [
-  {
-    id: "samenvatting",
-    title: "Samenvatting",
-    body: "Hier kun je een korte **samenvatting** plaatsen van je analyse of onderbouwing.\n\nBijvoorbeeld:\n- doel van het onderzoek\n- kernrisico's\n- belangrijkste conclusie"
-  },
-  {
-    id: "deel1",
-    title: "Deel 1",
-    body: "In **Deel 1** kun je de eerste standaardparagraaf plaatsen, bijvoorbeeld over *klantprofiel*, *herkomst vermogen* of *structuur*.\n\nGebruik dit als sjabloon en pas de tekst aan per dossier."
-  },
-  {
-    id: "deel2",
-    title: "Deel 2",
-    body: "In **Deel 2** kun je vervolginformatie opnemen: bijvoorbeeld *sector- of landenrisico's*, *screening-resultaten* of *mitigerende maatregelen*."
-  },
-  {
-    id: "einde",
-    title: "Einde",
-    body: "In **Einde** plaats je de slotconclusie, eventuele *aanbevelingen* en *restpunten*.\n\nBijvoorbeeld:\n- uiteindelijke risicobeoordeling\n- voorwaarden of monitoring\n- openstaande acties"
-  }
+  {{/* 
+    We maken een JavaScript array met alle pagina's in deze sectie.
+    .Pages is automatisch taal-specifiek (nl/en afhankelijk van de URL).
+  */}}
+  <script>
+ const stdPages = [
+    {{- range $index, $page := .Pages.ByTitle }}
+    {
+      slug: {{ $page.File.BaseFileName | jsonify }},
+      title: {{ $page.Title | jsonify }},
+      body: {{ $page.Content | jsonify }}
+    }{{ if not $page.IsLastPage }},{{ end }}
+    {{- end }}
 ];
+  function renderStdMenu() {
+    const cont = document.getElementById("stdSubmenu");
+    cont.innerHTML = "";
+    if (!stdPages.length) {
+      cont.innerHTML = "<div class='helper'>Geen standaardteksten gevonden.</div>";
+      return;
+    }
+    stdPages.forEach((item, idx) => {
+      const el = document.createElement("div");
+      el.className = "submenu-item";
+      el.textContent = item.title;
+      el.onclick = () => {
+        document.querySelectorAll("#stdSubmenu .submenu-item").forEach(n => n.classList.remove("active"));
+        el.classList.add("active");
+        openStd(item);
+      };
+      cont.appendChild(el);
 
-function renderStdMenu() {
-  const cont = document.getElementById("stdSubmenu");
-  cont.innerHTML = "";
-  stdSections.forEach(item => {
-    const el = document.createElement("div");
-    el.className = "submenu-item";
-    el.textContent = item.title;
-    el.onclick = () => {
-      document.querySelectorAll("#stdSubmenu .submenu-item").forEach(n => n.classList.remove("active"));
-      el.classList.add("active");
-      openStd(item);
-    };
-    cont.appendChild(el);
-  });
-}
+      // eerste item meteen openen
+      if (idx === 0) {
+        el.classList.add("active");
+        openStd(item);
+      }
+    });
+  }
 
-function mdSimple(text) {
-  // heel simpele markdown: **vet**, *cursief* en lijstjes met - of *
-  let html = text
-    .replace(/\n\n/g, "</p><p>")
-    .replace(/\n/g, "<br>");
-  html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-  html = html.replace(/\*(.+?)\*/g, "<em>$1</em>");
-  return "<p>" + html + "</p>";
-}
+  function openStd(item) {
+    const panel = document.getElementById("stdContent");
+    panel.innerHTML = `
+      <div class="content-title">${item.title}</div>
+      <div class="content-inner">${item.body}</div>
+    `;
+  }
 
-function openStd(item) {
-  const panel = document.getElementById("stdContent");
-  const html = mdSimple(item.body || "");
-  panel.innerHTML = `
-    <div class="content-title">${item.title}</div>
-    <div class="content-inner">${html}</div>
-  `;
-}
-
-renderStdMenu();
-</script>
-{{ define "main" }}
-  <aside class="sidebar">
-    <!-- jouw main menu -->
-  </aside>
-
-  <section class="submenu-wrap">
-    <!-- middenkolom: Samenvatting / Deel 1 / Deel 2 / Einde -->
-  </section>
-
-  <main class="content">
-    <div id="stdContent">
-      {{/* Voor nu: toon gewoon Samenvatting als default */}}
-      {{ $page := site.GetPage "standaard-teksten/samenvatting" }}
-      <div class="content-title">{{ $page.Title }}</div>
-      <div class="content-inner">
-        {{ $page.Content }}
-      </div>
-    </div>
-  </main>
+  document.addEventListener("DOMContentLoaded", renderStdMenu);
+  </script>
 {{ end }}
-
