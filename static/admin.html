@@ -61,8 +61,8 @@
   <!-- Netlify Identity widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
-  <!-- Decap / Netlify CMS -->
-  <script src="https://unpkg.com/decap-cms-app@^3.0.0/dist/decap-cms-app.js"></script>
+  <!-- Netlify CMS v2 (stabiel) -->
+  <script src="https://unpkg.com/netlify-cms-app@^2.15.0/dist/netlify-cms-app.js"></script>
 
   <script>
     // Init Netlify Identity en koppel aan de knop
@@ -82,8 +82,7 @@
       });
 
       window.netlifyIdentity.on("login", (user) => {
-        console.log("Ingelogd als:", user.email);
-        // na inloggen gewoon de pagina laten staan; CMS UI wordt ingeladen
+        console.log("Ingelogd als:", user && user.email);
       });
 
       window.netlifyIdentity.on("logout", () => {
@@ -92,44 +91,48 @@
     });
 
     // Init CMS met inline config
-    window.CMS.init({
-      config: {
-        backend: {
-          name: "git-gateway",
-          branch: "main"
-        },
-        media_folder: "static/uploads",
-        public_folder: "/uploads",
-        collections: [
-          {
-            name: "standard_texts_nl",
-            label: "Standaard texten (NL)",
-            label_singular: "Standaard tekst (NL)",
-            folder: "content/nl/standaard-teksten",
-            create: false,
-            slug: "{{slug}}",
-            extension: "md",
-            fields: [
-              { name: "title", label: "Titel", widget: "string" },
-              { name: "body", label: "Tekst", widget: "markdown" }
-            ]
+    if (window.CMS) {
+      window.CMS.init({
+        config: {
+          backend: {
+            name: "git-gateway",
+            branch: "main",
           },
-          {
-            name: "standard_texts_en",
-            label: "Standaard texten (EN)",
-            label_singular: "Standaard tekst (EN)",
-            folder: "content/en/standaard-teksten",
-            create: false,
-            slug: "{{slug}}",
-            extension: "md",
-            fields: [
-              { name: "title", label: "Title", widget: "string" },
-              { name: "body", label: "Text", widget: "markdown" }
-            ]
-          }
-        ]
-      }
-    });
+          media_folder: "static/uploads",
+          public_folder: "/uploads",
+          collections: [
+            {
+              name: "standard_texts_nl",
+              label: "Standaard texten (NL)",
+              label_singular: "Standaard tekst (NL)",
+              folder: "content/nl/standaard-teksten",
+              create: false,
+              slug: "{{slug}}",
+              extension: "md",
+              fields: [
+                { name: "title", label: "Titel", widget: "string" },
+                { name: "body", label: "Tekst", widget: "markdown" },
+              ],
+            },
+            {
+              name: "standard_texts_en",
+              label: "Standaard texten (EN)",
+              label_singular: "Standaard tekst (EN)",
+              folder: "content/en/standaard-teksten",
+              create: false,
+              slug: "{{slug}}",
+              extension: "md",
+              fields: [
+                { name: "title", label: "Title", widget: "string" },
+                { name: "body", label: "Text", widget: "markdown" },
+              ],
+            },
+          ],
+        },
+      });
+    } else {
+      console.error("Netlify CMS (window.CMS) kon niet worden geladen.");
+    }
   </script>
 </body>
 </html>
