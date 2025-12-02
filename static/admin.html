@@ -37,11 +37,64 @@
     </div>
   </div>
 
-  <!-- Hier injecteert Decap/Netlify CMS zijn eigen UI -->
+  <!-- Netlify Identity widget (login) -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <!-- Decap / Netlify CMS -->
   <script src="https://unpkg.com/decap-cms-app@^3.0.0/dist/decap-cms-app.js"></script>
+
   <script>
-    window.CMS.init();
+    // Init Netlify Identity (rechtsonder verschijnt een klein login-icoontje)
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin.html";
+          });
+        }
+      });
+      window.netlifyIdentity.init();
+    }
+
+    // Init CMS met inline config (geen los config.yml nodig)
+    window.CMS.init({
+      config: {
+        backend: {
+          name: "git-gateway",
+          branch: "main"
+        },
+        media_folder: "static/uploads",
+        public_folder: "/uploads",
+        collections: [
+          {
+            name: "standard_texts_nl",
+            label: "Standaard texten (NL)",
+            label_singular: "Standaard tekst (NL)",
+            folder: "content/nl/standaard-teksten",
+            create: false,
+            slug: "{{slug}}",
+            extension: "md",
+            fields: [
+              { name: "title", label: "Titel", widget: "string" },
+              { name: "body", label: "Tekst", widget: "markdown" }
+            ]
+          },
+          {
+            name: "standard_texts_en",
+            label: "Standaard texten (EN)",
+            label_singular: "Standaard tekst (EN)",
+            folder: "content/en/standaard-teksten",
+            create: false,
+            slug: "{{slug}}",
+            extension: "md",
+            fields: [
+              { name: "title", label: "Title", widget: "string" },
+              { name: "body", label: "Text", widget: "markdown" }
+            ]
+          }
+        ]
+      }
+    });
   </script>
 </body>
 </html>
-
