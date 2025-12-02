@@ -1,79 +1,80 @@
 {{ define "title" }}Standaard texten | {{ .Site.Title }}{{ end }}
 
 {{ define "main" }}
-  <aside class="sidebar">
-    <h3>Main Menu</h3>
-    <div id="mainMenu">
-      {{/* Hoofdmenu links, gebruikt dezelfde sections als de rest van de site */}}
-      {{ range .Site.Params.mainSections }}
-        <a class="sidebar-item{{ if eq $.Section . }} active{{ end }}" href="/{{ . }}/">{{ . }}</a>
-      {{ end }}
-    </div>
-  </aside>
+  <aside class="sidebar">
+    <h3>Main Menu</h3>
+    <div id="mainMenu">
+      {{/* Hoofdmenu links, gebruikt dezelfde sections als de rest van de site */}}
+      {{ range .Site.Params.mainSections }}
+        <a class="sidebar-item{{ if eq $.Section . }} active{{ end }}" href="/{{ . }}/">{{ . }}</a>
+      {{ end }}
+    </div>
+  </aside>
 
-  <section class="submenu-wrap">
-    <div class="submenu-header">Standaard texten</div>
-    <div class="helper">Kies een onderdeel van de standaardtekst.</div>
-    <div id="stdSubmenu" class="submenu-scroll"></div>
-  </section>
+  <section class="submenu-wrap">
+    <div class="submenu-header">Standaard texten</div>
+    <div class="helper">Kies een onderdeel van de standaardtekst.</div>
+    <div id="stdSubmenu" class="submenu-scroll"></div>
+  </section>
 
-  <main class="content">
-    <div id="stdContent">
-      <div class="content-title">Standaard texten</div>
-      <div class="content-inner">
-        Selecteer in de middelste kolom: <em>Samenvatting</em>, <em>Deel 1</em>, <em>Deel 2</em> of <em>Einde</em>.
-      </div>
-    </div>
-  </main>
+  <main class="content">
+    <div id="stdContent">
+      <div class="content-title">Standaard texten</div>
+      <div class="content-inner">
+        Selecteer in de middelste kolom: <em>Samenvatting</em>, <em>Deel 1</em>, <em>Deel 2</em> of <em>Einde</em>.
+      </div>
+    </div>
+  </main>
 
-  {{/* 
-    We maken een JavaScript array met alle pagina's in deze sectie.
-    .Pages is automatisch taal-specifiek (nl/en afhankelijk van de URL).
-  */}}
-  <script>
- const stdPages = [
-    {{- range $index, $page := .Pages.ByTitle }}
+  {{/* 
+    We maken een JavaScript array met alle pagina's in deze sectie.
+    .Pages is automatisch taal-specifiek (nl/en afhankelijk van de URL).
+  */}}
+  <script>
+ const stdPages = [
+    {{- $pages := .Pages.ByTitle -}} {{/* Definieer de paginaset */}}
+    {{- range $index, $page := $pages }} {{/* Itereer met $index en $page */}}
     {
       slug: {{ $page.File.BaseFileName | jsonify }},
       title: {{ $page.Title | jsonify }},
       body: {{ $page.Content | jsonify }}
-    }{{ if not $page.IsLastPage }},{{ end }}
+    }{{ if not (eq $index (sub (len $pages) 1)) }},{{ end }} {{/* Voeg komma toe, behalve na de laatste index */}}
     {{- end }}
 ];
-  function renderStdMenu() {
-    const cont = document.getElementById("stdSubmenu");
-    cont.innerHTML = "";
-    if (!stdPages.length) {
-      cont.innerHTML = "<div class='helper'>Geen standaardteksten gevonden.</div>";
-      return;
-    }
-    stdPages.forEach((item, idx) => {
-      const el = document.createElement("div");
-      el.className = "submenu-item";
-      el.textContent = item.title;
-      el.onclick = () => {
-        document.querySelectorAll("#stdSubmenu .submenu-item").forEach(n => n.classList.remove("active"));
-        el.classList.add("active");
-        openStd(item);
-      };
-      cont.appendChild(el);
+  function renderStdMenu() {
+    const cont = document.getElementById("stdSubmenu");
+    cont.innerHTML = "";
+    if (!stdPages.length) {
+      cont.innerHTML = "<div class='helper'>Geen standaardteksten gevonden.</div>";
+      return;
+    }
+    stdPages.forEach((item, idx) => {
+      const el = document.createElement("div");
+      el.className = "submenu-item";
+      el.textContent = item.title;
+      el.onclick = () => {
+        document.querySelectorAll("#stdSubmenu .submenu-item").forEach(n => n.classList.remove("active"));
+        el.classList.add("active");
+        openStd(item);
+      };
+      cont.appendChild(el);
 
-      // eerste item meteen openen
-      if (idx === 0) {
-        el.classList.add("active");
-        openStd(item);
-      }
-    });
-  }
+      // eerste item meteen openen
+      if (idx === 0) {
+        el.classList.add("active");
+        openStd(item);
+      }
+    });
+  }
 
-  function openStd(item) {
-    const panel = document.getElementById("stdContent");
-    panel.innerHTML = `
-      <div class="content-title">${item.title}</div>
-      <div class="content-inner">${item.body}</div>
-    `;
-  }
+  function openStd(item) {
+    const panel = document.getElementById("stdContent");
+    panel.innerHTML = `
+      <div class="content-title">${item.title}</div>
+      <div class="content-inner">${item.body}</div>
+    `;
+  }
 
-  document.addEventListener("DOMContentLoaded", renderStdMenu);
-  </script>
+  document.addEventListener("DOMContentLoaded", renderStdMenu);
+  </script>
 {{ end }}
