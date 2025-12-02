@@ -1,0 +1,111 @@
+{{ define "title" }}Other | {{ .Site.Title }}{{ end }}
+{{ define "main" }}
+  <aside class="sidebar">
+    <h3>Main Menu</h3>
+    <div id="mainMenu">
+      {{ range .Site.Params.mainSections }}
+        <a class="sidebar-item{{ if eq $.Section . }} active{{ end }}" href="/{{ . }}/">{{ . }}</a>
+      {{ end }}
+    </div>
+  </aside>
+
+  <section class="submenu-wrap">
+    <div class="submenu-header">Other</div>
+    <div class="helper">Extra materiaal, tips, tricks, voorbeelden.</div>
+    <div id="otherSubmenu" class="submenu-scroll"></div>
+  </section>
+
+  <main class="content">
+    <div id="otherContent">
+      <div class="content-title">Other</div>
+      <div class="content-inner">
+        Kies een item in de middelste kolom.
+      </div>
+    </div>
+  </main>
+
+<script>
+const otherStatic = [
+  { id: "tips-tricks", label: "Tips & Tricks", body: "Hier kun je praktische tips, checklists, voorbeelden van goede onderbouwingen, e-mailtemplates, enz. plaatsen.", isMarkdown: false }
+];
+
+let adverseItems = [];
+
+function mdToHtml(md) {
+  if (!md) return "";
+  let html = md;
+  html = html.replace(/^### (.*)$/gim, "<h3>$1</h3>");
+  html = html.replace(/^## (.*)$/gim, "<h2>$1</h2>");
+  html = html.replace(/^# (.*)$/gim, "<h1>$1</h1>");
+  html = html.replace(/\*\*(.*?)\*\*/gim, "<strong>$1</strong>");
+  html = html.replace(/\n\n- (.*)/gim, "<ul><li>$1</li></ul>");
+  html = html.replace(/\n- (.*)/gim, "<li>$1</li>");
+  html = html.replace(/\n/g, "<br>");
+  return html;
+}
+
+function allOtherCategories() {
+  return [...otherStatic, ...adverseItems];
+}
+
+function renderOtherMenu(filter = "") {
+  const q = (filter || "").toLowerCase();
+  const container = document.getElementById("otherSubmenu");
+  container.innerHTML = "";
+
+  const cats = allOtherCategories();
+  cats.forEach(cat => {
+    const hay = (cat.label + " " + (cat.body || "")).toLowerCase();
+    if (q && !hay.includes(q)) return;
+    const block = document.createElement("div");
+    block.className = "sector-block";
+
+    const header = document.createElement("div");
+    header.className = "sector-header";
+    header.innerHTML = `<span>${cat.label}</span>`;
+
+    header.onclick = () => openOtherCategory(cat);
+
+    block.appendChild(header);
+    container.appendChild(block);
+  });
+
+  if (!container.innerHTML.trim()) {
+    container.innerHTML = "<div class='helper'>Geen items gevonden.</div>";
+  }
+}
+
+function openOtherCategory(cat) {
+  const panel = document.getElementById("otherContent");
+  const inner = cat.isMarkdown ? mdToHtml(cat.body || "") : (cat.body || "");
+  panel.innerHTML = `
+    <div class="content-title">${cat.label}</div>
+    <div class="content-inner">${inner}</div>
+  `;
+}
+
+async function loadOther() {
+  try {
+    const res = await fetch("/industry_index.json");
+    const data = await res.json();
+    adverseItems = data
+      .filter(item => {
+        const t = (item.title || "").toLowerCase();
+        const r = (item.risk_type || "").toLowerCase();
+        return t.startsWith("adverse media") || r.startsWith("adverse media");
+      })
+      .map(item => ({
+        id: "adv-" + (item.id || item.title),
+        label: item.risk_type || item.title,
+        body: item.body || "",
+        isMarkdown: true
+      }));
+  } catch (e) {
+    adverseItems = [];
+  }
+  renderOtherMenu();
+}
+
+loadOther();
+</script>
+{{ end }}

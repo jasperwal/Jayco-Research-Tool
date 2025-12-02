@@ -1,0 +1,6 @@
+baseURL = "/"
+languageCode = "en-us"
+title = "Jayco Research Tool"
+
+[params]
+  mainSections = ["company-registers","country-risks","industry-risks","laws-regulations-policies","screening","supervision","other","standaard-teksten"]

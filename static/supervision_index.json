@@ -1,0 +1,344 @@
+[
+  {
+    "title": "Austrian Financial Market Authority (AT)",
+    "country": "AT",
+    "category": "Financial Regulations",
+    "body": "**Name:** Austrian Financial Market Authority (AT)\n\n**Country:** AT\n\n**Link:** http://www.fma.gv.at/cms/site/EN/index.html"
+  },
+  {
+    "title": "Australian Securities and Investments Commission",
+    "country": "Australia",
+    "category": "Financial Regulations",
+    "body": "**Name:** Australian Securities and Investments Commission\n\n**Country:** Australia\n\n**Link:** http://www.asic.gov.au/asic/asic.nsf"
+  },
+  {
+    "title": "Australian Prudential Regulation Authority",
+    "country": "Australia",
+    "category": "Financial Regulations",
+    "body": "**Name:** Australian Prudential Regulation Authority\n\n**Country:** Australia\n\n**Link:** http://www.apra.gov.au/"
+  },
+  {
+    "title": "Belgian Banking, Finance and Insurance Commission (BE)",
+    "country": "BE",
+    "category": "Financial Regulations",
+    "body": "**Name:** Belgian Banking, Finance and Insurance Commission (BE)\n\n**Country:** BE\n\n**Link:** http://www.cbfa.be/eng/index.asp"
+  },
+  {
+    "title": "Canadian Office of the Superintendent of Financial Institutions",
+    "country": "Canada",
+    "category": "Financial Regulations",
+    "body": "**Name:** Canadian Office of the Superintendent of Financial Institutions\n\n**Country:** Canada\n\n**Link:** http://www.osfi-bsif.gc.ca/osfi/index_e.aspx?ArticleID=3"
+  },
+  {
+    "title": "Swiss Federal Banking Commission (SFBC)",
+    "country": "CH",
+    "category": "Financial Regulations",
+    "body": "**Name:** Swiss Federal Banking Commission (SFBC)\n\n**Country:** CH\n\n**Link:** http://www.sfbc.admin.ch"
+  },
+  {
+    "title": "BaFin (German Regulator) (DE)",
+    "country": "DE",
+    "category": "Financial Regulations",
+    "body": "**Name:** BaFin (German Regulator) (DE)\n\n**Country:** DE\n\n**Link:** https://www.bafin.de/EN/PublikationenDaten/Datenbanken/Datenbanken_node_en.html"
+  },
+  {
+    "title": "Danish Financial Supervisory Authority (FSA)",
+    "country": "DK",
+    "category": "Financial Regulations",
+    "body": "**Name:** Danish Financial Supervisory Authority (FSA)\n\n**Country:** DK\n\n**Link:** http://www.ftnet.dk\n\n**Extra link:** https://www.finanstilsynet.dk/Tilsyn/Virksomheder-under-tilsyn/Soeg-virksomheder"
+  },
+  {
+    "title": "Finnish Financial Supervision Authority (FSA)",
+    "country": "FI",
+    "category": "Financial Regulations",
+    "body": "**Name:** Finnish Financial Supervision Authority (FSA)\n\n**Country:** FI\n\n**Link:** http://www.rahoitustarkastus.fi"
+  },
+  {
+    "title": "Autorite des Marches Financiers (FR)",
+    "country": "FR",
+    "category": "Financial Regulations",
+    "body": "**Name:** Autorite des Marches Financiers (FR)\n\n**Country:** FR\n\n**Link:** https://www.data.gouv.fr/datasets\n\n**Extra link:** Autorité des marchés financiers (AMF): Protection of savings, Investors' information and proper functioning of financial markets | AMF\n\n\n\nThe AMF regulates the French financial market and works to ensure that financial markets are robust, protective and useful to the economy.\n\nFor searching the registers, go to \"Jeux de données\" and enter the type of organisation, for example \"sociétés de gestion de portefeuille\". You will enter a page where you can download a CSV file with the names of the registered entities.\n\nCompanies that are under their supervision are a.o.:\n\nInvestment Management companies\nProfessional Investors\nFinTech\nInvestment Services providers"
+  },
+  {
+    "title": "Registre Uique des Intermediaires en Assurance, Banque et Finance",
+    "country": "FR",
+    "category": "Financial Regulations",
+    "body": "**Name:** Registre Uique des Intermediaires en Assurance, Banque et Finance\n\n**Country:** FR\n\n**Link:** www.orias.fr"
+  },
+  {
+    "title": "Banque de France (FR)",
+    "country": "FR",
+    "category": "Financial Regulations",
+    "body": "**Name:** Banque de France (FR)\n\n**Country:** FR\n\n**Link:** http://www.banque-france.fr/home.htm"
+  },
+  {
+    "title": "Greece Helenic Capital Market Commission (CMC)",
+    "country": "GR",
+    "category": "Financial Regulations",
+    "body": "**Name:** Greece Helenic Capital Market Commission (CMC)\n\n**Country:** GR\n\n**Link:** http://hcmc/gr"
+  },
+  {
+    "title": "Guernsey Financial Services Commission",
+    "country": "GU",
+    "category": "Financial Regulations",
+    "body": "**Name:** Guernsey Financial Services Commission\n\n**Country:** GU\n\n**Link:** http://www.bcb.gov.br"
+  },
+  {
+    "title": "Hong Kong Monetary Authority, Hong Kong, SAR",
+    "country": "Hong Kong",
+    "category": "Financial Regulations",
+    "body": "**Name:** Hong Kong Monetary Authority, Hong Kong, SAR\n\n**Country:** Hong Kong\n\n**Link:** http://www.info.gov.hk/hkma/"
+  },
+  {
+    "title": "Financial Regulator of Ireland, Dublin (IE)",
+    "country": "IE",
+    "category": "Financial Regulations",
+    "body": "**Name:** Financial Regulator of Ireland, Dublin (IE)\n\n**Country:** IE\n\n**Link:** http://www.financialregulator.ie/Pages/home.aspx"
+  },
+  {
+    "title": "Bankers Almanac",
+    "country": "International",
+    "category": "Financial Regulations",
+    "body": "**Name:** Bankers Almanac\n\n**Country:** International\n\n**Link:** http://www.bankersalmanac.com/"
+  },
+  {
+    "title": "OneSource",
+    "country": "International",
+    "category": "Financial Regulations",
+    "body": "**Name:** OneSource\n\n**Country:** International\n\n**Link:** http://www.onesource.com"
+  },
+  {
+    "title": "BIS (Bank for International Settlements, Basel, CH)",
+    "country": "International",
+    "category": "Financial Regulations",
+    "body": "**Name:** BIS (Bank for International Settlements, Basel, CH)\n\n**Country:** International\n\n**Link:** http://www.bis.org/"
+  },
+  {
+    "title": "SWIFT",
+    "country": "International",
+    "category": "Financial Regulations",
+    "body": "**Name:** SWIFT\n\n**Country:** International\n\n**Link:** http://www.swift.com/\n\n**Extra link:** Secondary source"
+  },
+  {
+    "title": "Private Banking & Wealth Management Search Tool",
+    "country": "International",
+    "category": "Financial Regulations",
+    "body": "**Name:** Private Banking & Wealth Management Search Tool\n\n**Country:** International\n\n**Link:** http://www.privatebanking.info/"
+  },
+  {
+    "title": "Graydon",
+    "country": "International",
+    "category": "Financial Regulations",
+    "body": "**Name:** Graydon\n\n**Country:** International\n\n**Link:** http://www.graydon.co.uk\n\n**Extra link:** Company profiles, Financials, Shareholders"
+  },
+  {
+    "title": "European Business Register",
+    "country": "International",
+    "category": "Financial Regulations",
+    "body": "**Name:** European Business Register\n\n**Country:** International\n\n**Link:** http://ebr.eurodb.be/controller/login"
+  },
+  {
+    "title": "SEC (Securities and Exchange Commission), Washington, DC",
+    "country": "International",
+    "category": "Stock Exchanges",
+    "body": "**Name:** SEC (Securities and Exchange Commission), Washington, DC\n\n**Country:** International\n\n**Link:** http://www.sec.gov/"
+  },
+  {
+    "title": "Creditreform (Germany)",
+    "country": "International",
+    "category": "Financial Regulations",
+    "body": "**Name:** Creditreform (Germany)\n\n**Country:** International\n\n**Link:** http://www.creditreform.de"
+  },
+  {
+    "title": "Euronext",
+    "country": "International",
+    "category": "Financial Regulations",
+    "body": "**Name:** Euronext\n\n**Country:** International\n\n**Link:** http://www.euronext.com/landing/indexMarket-18812-EN.html"
+  },
+  {
+    "title": "Coface",
+    "country": "International",
+    "category": "Financial Regulations",
+    "body": "**Name:** Coface\n\n**Country:** International\n\n**Link:** http://www.coface.com"
+  },
+  {
+    "title": "Iceland Financial Supervisory Authority (FME)",
+    "country": "IS",
+    "category": "Financial Regulations",
+    "body": "**Name:** Iceland Financial Supervisory Authority (FME)\n\n**Country:** IS\n\n**Link:** http://www.fme.is/fme.nsf/pages/index/html"
+  },
+  {
+    "title": "Bank of Italy",
+    "country": "IT",
+    "category": "Financial Regulations",
+    "body": "**Name:** Bank of Italy\n\n**Country:** IT\n\n**Link:** http://www.bancaditalia.it"
+  },
+  {
+    "title": "Japanese Financial Services Agency",
+    "country": "Japan",
+    "category": "Financial Regulations",
+    "body": "**Name:** Japanese Financial Services Agency\n\n**Country:** Japan\n\n**Link:** http://www.fsa.go.jp/en/index.html"
+  },
+  {
+    "title": "Jersey Financial Services",
+    "country": "Jersey",
+    "category": "Financial Regulations",
+    "body": "**Name:** Jersey Financial Services\n\n**Country:** Jersey\n\n**Link:** http://www.jerseyfsc.org"
+  },
+  {
+    "title": "Luxembourg Commission de Surveillance du Secteur Financier (CSSF)",
+    "country": "LU",
+    "category": "Financial Regulations",
+    "body": "**Name:** Luxembourg Commission de Surveillance du Secteur Financier (CSSF)\n\n**Country:** LU\n\n**Link:** http://www.cssf.lu"
+  },
+  {
+    "title": "New Zealand Securities Commission",
+    "country": "New Zealand",
+    "category": "Financial Regulations",
+    "body": "**Name:** New Zealand Securities Commission\n\n**Country:** New Zealand\n\n**Link:** http://www.sec-com.govt.nz"
+  },
+  {
+    "title": "AFM (co-Regulator)",
+    "country": "NL",
+    "category": "Financial Regulations",
+    "body": "**Name:** AFM (co-Regulator)\n\n**Country:** NL\n\n**Link:** http://www.afm.nl/"
+  },
+  {
+    "title": "DNB (Central Bank and co-Regulator)",
+    "country": "NL",
+    "category": "Financial Regulations",
+    "body": "**Name:** DNB (Central Bank and co-Regulator)\n\n**Country:** NL\n\n**Link:** http://www.dnb.nl/home/"
+  },
+  {
+    "title": "Norwegian Banking, Insurance and Securities Commission",
+    "country": "NO",
+    "category": "Financial Regulations",
+    "body": "**Name:** Norwegian Banking, Insurance and Securities Commission\n\n**Country:** NO\n\n**Link:** http://www.kredittilsynet.no"
+  },
+  {
+    "title": "Bank of Portugal",
+    "country": "PT",
+    "category": "Financial Regulations",
+    "body": "**Name:** Bank of Portugal\n\n**Country:** PT\n\n**Link:** http://www.bportugal.pt"
+  },
+  {
+    "title": "Swedish Financial Supervisory Authority",
+    "country": "SE",
+    "category": "Financial Regulations",
+    "body": "**Name:** Swedish Financial Supervisory Authority\n\n**Country:** SE\n\n**Link:** http://www.fi.se"
+  },
+  {
+    "title": "Monetary Authority of Singapore (MAS)",
+    "country": "Singapore",
+    "category": "Financial Regulations",
+    "body": "**Name:** Monetary Authority of Singapore (MAS)\n\n**Country:** Singapore\n\n**Link:** http://www.mas.gov.sg/masmcm/bin/pt1home.htm"
+  },
+  {
+    "title": "Bank of Spain",
+    "country": "SP",
+    "category": "Financial Regulations",
+    "body": "**Name:** Bank of Spain\n\n**Country:** SP\n\n**Link:** http://www.bde.es"
+  },
+  {
+    "title": "Dirrection General de Seguros",
+    "country": "SP",
+    "category": "Financial Regulations",
+    "body": "**Name:** Dirrection General de Seguros\n\n**Country:** SP\n\n**Link:** nan"
+  },
+  {
+    "title": "FSA (Financial Services Authority) (Regulator)",
+    "country": "UK",
+    "category": "Financial Regulations",
+    "body": "**Name:** FSA (Financial Services Authority) (Regulator)\n\n**Country:** UK\n\n**Link:** http://www.fsa.gov.uk/\n\n**Extra link:** https://register.fca.org.uk/\n\n\n\nwww.bankofengland.co.uk."
+  },
+  {
+    "title": "SEC (Securities and Exchange Commission), Washington, DC",
+    "country": "USA",
+    "category": "Stock Exchanges",
+    "body": "**Name:** SEC (Securities and Exchange Commission), Washington, DC\n\n**Country:** USA\n\n**Link:** http://www.sec.gov/"
+  },
+  {
+    "title": "United States Office of the Comptroller of the Currency (OCC)",
+    "country": "USA",
+    "category": "Financial Regulations",
+    "body": "**Name:** United States Office of the Comptroller of the Currency (OCC)\n\n**Country:** USA\n\n**Link:** http://www.occ.treas.gov/aboutocc.htm"
+  },
+  {
+    "title": "Federal Reserve Bank, Washington, DC",
+    "country": "USA",
+    "category": "Financial Regulations",
+    "body": "**Name:** Federal Reserve Bank, Washington, DC\n\n**Country:** USA\n\n**Link:** http://www.federalreserve.gov/"
+  },
+  {
+    "title": "FDIC, Washington, DC",
+    "country": "USA",
+    "category": "Financial Regulations",
+    "body": "**Name:** FDIC, Washington, DC\n\n**Country:** USA\n\n**Link:** http://www.fdic.gov/"
+  },
+  {
+    "title": "State Banking Regulator of NY",
+    "country": "USA",
+    "category": "Financial Regulations",
+    "body": "**Name:** State Banking Regulator of NY\n\n**Country:** USA\n\n**Link:** http://www.banking.state.ny.us/"
+  },
+  {
+    "title": "Federal Deposit Insurance Corporation",
+    "country": "USA",
+    "category": "Financial Regulations",
+    "body": "**Name:** Federal Deposit Insurance Corporation\n\n**Country:** USA\n\n**Link:** http://www2.fdic.gov/idasp/main.asp"
+  },
+  {
+    "title": "MRC?",
+    "country": "nan",
+    "category": "Financial Regulations",
+    "body": "**Name:** MRC?\n\n**Country:** nan\n\n**Link:** nan"
+  },
+  {
+    "title": "Brasilian Stock Exchange",
+    "country": "BR",
+    "category": "Stock Exchanges",
+    "body": "**Name:** Brasilian Stock Exchange\n\n**Country:** BR\n\n**Link:** http://www.bovespa.com.br/indexi.asp\n\n**Extra link:** Stock Listings Brasil\n\n\n\nFree access"
+  },
+  {
+    "title": "Regulator for charities in England and Wales",
+    "country": "UK",
+    "category": "Financial Regulations",
+    "body": "**Name:** Regulator for charities in England and Wales\n\n**Country:** UK\n\n**Link:** www.charity-commission.gov.uk\n\n**Extra link:** Charities in England & Wales"
+  },
+  {
+    "title": "Approved schools in UK",
+    "country": "UK",
+    "category": "Financial Regulations",
+    "body": "**Name:** Approved schools in UK\n\n**Country:** UK\n\n**Link:** lists of approved educational facilities"
+  },
+  {
+    "title": "The Office of the Scottish Charity Regulator",
+    "country": "SC",
+    "category": "Financial Regulations",
+    "body": "**Name:** The Office of the Scottish Charity Regulator\n\n**Country:** SC\n\n**Link:** www.oscr.org.uk\n\n**Extra link:** Charities in Scotland"
+  },
+  {
+    "title": "Bolsa de Valores de Sao Paulo",
+    "country": "BR",
+    "category": "Financial Regulations",
+    "body": "**Name:** Bolsa de Valores de Sao Paulo\n\n**Country:** BR\n\n**Link:** http://www.bovespa.com.br/Principal.asp"
+  },
+  {
+    "title": "CVM",
+    "country": "BR",
+    "category": "Financial Regulations",
+    "body": "**Name:** CVM\n\n**Country:** BR\n\n**Link:** http://www.bovespa.com.br/Principal.asp"
+  },
+  {
+    "title": "FDIC",
+    "country": "BR",
+    "category": "Financial Regulations",
+    "body": "**Name:** FDIC\n\n**Country:** BR\n\n**Link:** http://www.cvm.gov.br/asp/cvmwww/cadastro/formcad.ap"
+  },
+  {
+    "title": "FINMA",
+    "country": "SW",
+    "category": "Financial Regulations",
+    "body": "**Name:** FINMA\n\n**Country:** SW\n\n**Link:** https://www.finma.ch/en/finma-public/authorised-institutions-individuals-and-products/#query=geneva"
+  }
+]

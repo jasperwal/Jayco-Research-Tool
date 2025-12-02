@@ -1,0 +1,160 @@
+{{ define "title" }}Company Registers | {{ .Site.Title }}{{ end }}
+{{ define "main" }}
+  <aside class="sidebar">
+    <h3>Main Menu</h3>
+    <div id="mainMenu">
+      {{ range .Site.Params.mainSections }}
+        <a class="sidebar-item{{ if eq $.Section . }} active{{ end }}" href="/{{ . }}/">{{ . }}</a>
+      {{ end }}
+    </div>
+  </aside>
+
+  <section class="submenu-wrap">
+    <div class="submenu-header">Company Registers</div>
+    <input id="companySearch" class="search-box" placeholder="Zoek land of register…">
+    <div class="helper">Landen zijn gegroepeerd per werelddeel. Klik op een land om de registers te zien.</div>
+    <div id="companySubmenu" class="submenu-scroll"></div>
+  </section>
+
+  <main class="content">
+    <div id="companyContent">
+      <div class="content-title">Company Registers</div>
+      <div class="content-inner">
+        Selecteer in de middelste kolom eerst een land. In deze kolom zie je dan alle beschikbare registers en bronnen voor dat land.
+      </div>
+    </div>
+  </main>
+
+<script>
+const companyUrl = "/company_index.json";
+let companyData = [];
+let groupedByRegion = {};
+
+function groupCompany(data) {
+  const byRegion = {};
+  data.forEach(item => {
+    const region = item.region || "Other";
+    const country = item.country || "Unknown";
+    if (!byRegion[region]) byRegion[region] = {};
+    if (!byRegion[region][country]) byRegion[region][country] = [];
+    byRegion[region][country].push(item);
+  });
+
+  // sort regions and countries
+  const ordered = {};
+  const regions = Object.keys(byRegion);
+  const preferred = ["Europe","Middle East","Asia","Africa","North America","South America","Oceania","Other","International","Unknown"];
+  regions.sort((a,b) => {
+    const ia = preferred.indexOf(a);
+    const ib = preferred.indexOf(b);
+    if (ia === -1 && ib === -1) return a.localeCompare(b);
+    if (ia === -1) return 1;
+    if (ib === -1) return -1;
+    return ia - ib;
+  });
+  regions.forEach(region => {
+    const countries = byRegion[region];
+    const orderedCountries = {};
+    Object.keys(countries).sort().forEach(c => {
+      // sort registers by name
+      orderedCountries[c] = countries[c].sort((a,b) => a.name.localeCompare(b.name));
+    });
+    ordered[region] = orderedCountries;
+  });
+  return ordered;
+}
+
+function renderCompanySubmenu(filter = "") {
+  const q = filter.toLowerCase();
+  const container = document.getElementById("companySubmenu");
+  container.innerHTML = "";
+
+  Object.keys(groupedByRegion).forEach(region => {
+    const countries = groupedByRegion[region];
+
+    const regionBlock = document.createElement("div");
+    regionBlock.className = "sector-block";
+
+    const header = document.createElement("div");
+    header.className = "sector-header";
+    header.innerHTML = `<span>${region}</span><span>▶</span>`;
+
+    const countryBlock = document.createElement("div");
+    countryBlock.classList.add("sector-items","hidden");
+
+    let anyCountryShown = false;
+
+    Object.keys(countries).forEach(country => {
+      const regs = countries[country];
+      // filter: zoekterm moet voorkomen in landnaam of in een van de register-namen
+      const haystack = (country + " " + regs.map(r => r.name).join(" ")).toLowerCase();
+      if (q && !haystack.includes(q)) return;
+
+      const el = document.createElement("div");
+      el.className = "submenu-item";
+      el.textContent = country;
+      el.onclick = () => {
+        document.querySelectorAll(".submenu-item").forEach(n => n.classList.remove("active"));
+        el.classList.add("active");
+        openCountryRegisters(country, regs, region);
+      };
+      countryBlock.appendChild(el);
+      anyCountryShown = true;
+    });
+
+    if (!anyCountryShown) return;
+
+    header.onclick = () => {
+      const collapsed = countryBlock.classList.contains("hidden");
+      countryBlock.classList.toggle("hidden");
+      header.querySelector("span:last-child").textContent = collapsed ? "▼" : "▶";
+    };
+
+    regionBlock.appendChild(header);
+    regionBlock.appendChild(countryBlock);
+    container.appendChild(regionBlock);
+  });
+
+  if (!container.innerHTML.trim()) {
+    container.innerHTML = "<div class='helper'>Geen landen of registers gevonden.</div>";
+  }
+}
+
+function openCountryRegisters(country, regs, region) {
+  const panel = document.getElementById("companyContent");
+  const listItems = regs.map(r => {
+    const url = r.url ? `<a href="${r.url}" target="_blank" rel="noopener noreferrer">${r.url}</a>` : "";
+    const notes = (r.notes && r.notes !== "nan") ? `<div style="font-size:13px;margin-top:4px;color:#374151;">${r.notes.replace(/\n/g,"<br>")}</div>` : "";
+    return `<li><strong>${r.name}</strong>${url ? "<br>" + url : ""}${notes}</li>`;
+  }).join("");
+
+  panel.innerHTML = `
+    <div class="content-title">${country}</div>
+    <div class="content-meta">
+      Werelddeel: ${region}
+    </div>
+    <div class="content-inner">
+      <ul>
+        ${listItems}
+      </ul>
+    </div>
+  `;
+}
+
+async function initCompany() {
+  try {
+    const res = await fetch(companyUrl);
+    companyData = await res.json();
+    groupedByRegion = groupCompany(companyData);
+    renderCompanySubmenu();
+  } catch (e) {
+    document.getElementById("companySubmenu").innerHTML =
+      "<div class='helper' style='color:red'>Kan company_index.json niet laden.</div>";
+  }
+}
+
+document.getElementById("companySearch").addEventListener("input", e => renderCompanySubmenu(e.target.value));
+
+initCompany();
+</script>
+{{ end }}

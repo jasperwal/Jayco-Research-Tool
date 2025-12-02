@@ -1,0 +1,108 @@
+{{ define "title" }}Standaard texten | {{ .Site.Title }}{{ end }}
+{{ define "main" }}
+  <aside class="sidebar">
+    <h3>Main Menu</h3>
+    <div id="mainMenu">
+      {{ range .Site.Params.mainSections }}
+        <a class="sidebar-item{{ if eq $.Section . }} active{{ end }}" href="/{{ . }}/">{{ . }}</a>
+      {{ end }}
+    </div>
+  </aside>
+
+  <section class="submenu-wrap">
+    <div class="submenu-header">Standaard texten</div>
+    <div class="helper">Kies een onderdeel van de standaardtekst.</div>
+    <div id="stdSubmenu" class="submenu-scroll"></div>
+  </section>
+
+  <main class="content">
+    <div id="stdContent">
+      <div class="content-title">Standaard texten</div>
+      <div class="content-inner">
+        Selecteer in de middelste kolom: <em>Samenvatting</em>, <em>Deel 1</em>, <em>Deel 2</em> of <em>Einde</em>.
+      </div>
+    </div>
+  </main>
+
+<script>
+const stdSections = [
+  {
+    id: "samenvatting",
+    title: "Samenvatting",
+    body: "Hier kun je een korte **samenvatting** plaatsen van je analyse of onderbouwing.\n\nBijvoorbeeld:\n- doel van het onderzoek\n- kernrisico's\n- belangrijkste conclusie"
+  },
+  {
+    id: "deel1",
+    title: "Deel 1",
+    body: "In **Deel 1** kun je de eerste standaardparagraaf plaatsen, bijvoorbeeld over *klantprofiel*, *herkomst vermogen* of *structuur*.\n\nGebruik dit als sjabloon en pas de tekst aan per dossier."
+  },
+  {
+    id: "deel2",
+    title: "Deel 2",
+    body: "In **Deel 2** kun je vervolginformatie opnemen: bijvoorbeeld *sector- of landenrisico's*, *screening-resultaten* of *mitigerende maatregelen*."
+  },
+  {
+    id: "einde",
+    title: "Einde",
+    body: "In **Einde** plaats je de slotconclusie, eventuele *aanbevelingen* en *restpunten*.\n\nBijvoorbeeld:\n- uiteindelijke risicobeoordeling\n- voorwaarden of monitoring\n- openstaande acties"
+  }
+];
+
+function renderStdMenu() {
+  const cont = document.getElementById("stdSubmenu");
+  cont.innerHTML = "";
+  stdSections.forEach(item => {
+    const el = document.createElement("div");
+    el.className = "submenu-item";
+    el.textContent = item.title;
+    el.onclick = () => {
+      document.querySelectorAll("#stdSubmenu .submenu-item").forEach(n => n.classList.remove("active"));
+      el.classList.add("active");
+      openStd(item);
+    };
+    cont.appendChild(el);
+  });
+}
+
+function mdSimple(text) {
+  // heel simpele markdown: **vet**, *cursief* en lijstjes met - of *
+  let html = text
+    .replace(/\n\n/g, "</p><p>")
+    .replace(/\n/g, "<br>");
+  html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  html = html.replace(/\*(.+?)\*/g, "<em>$1</em>");
+  return "<p>" + html + "</p>";
+}
+
+function openStd(item) {
+  const panel = document.getElementById("stdContent");
+  const html = mdSimple(item.body || "");
+  panel.innerHTML = `
+    <div class="content-title">${item.title}</div>
+    <div class="content-inner">${html}</div>
+  `;
+}
+
+renderStdMenu();
+</script>
+{{ define "main" }}
+  <aside class="sidebar">
+    <!-- jouw main menu -->
+  </aside>
+
+  <section class="submenu-wrap">
+    <!-- middenkolom: Samenvatting / Deel 1 / Deel 2 / Einde -->
+  </section>
+
+  <main class="content">
+    <div id="stdContent">
+      {{/* Voor nu: toon gewoon Samenvatting als default */}}
+      {{ $page := site.GetPage "standaard-teksten/samenvatting" }}
+      <div class="content-title">{{ $page.Title }}</div>
+      <div class="content-inner">
+        {{ $page.Content }}
+      </div>
+    </div>
+  </main>
+{{ end }}
+

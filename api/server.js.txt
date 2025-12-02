@@ -1,0 +1,77 @@
+// npm install express body-parser fs
+const express = require("express");
+const bodyParser = require("body-parser");
+const fs = require("fs");
+const path = require("path");
+
+const app = express();
+app.use(bodyParser.json());
+
+// heel simpele "auth"
+const ADMIN_USER = process.env.ADMIN_USER || "admin";
+const ADMIN_PASS = process.env.ADMIN_PASS || "secret";
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "supersecret-token";
+
+// kleine middleware om admin te checken
+function requireAdmin(req, res, next) {
+  const token = req.headers["x-admin-token"];
+  if (token !== ADMIN_TOKEN) {
+    return res.status(401).json({ error: "Not authorized" });
+  }
+  next();
+}
+
+// login endpoint (kun je aanroepen vanuit /admin)
+app.post("/api/login", (req, res) => {
+  const { username, password } = req.body;
+  if (username === ADMIN_USER && password === ADMIN_PASS) {
+    return res.json({ token: ADMIN_TOKEN });
+  }
+  return res.status(401).json({ error: "Invalid credentials" });
+});
+
+// helper: pad naar JSON
+function countryIndexPath(lang) {
+  return path.join(__dirname, "..", "static", lang, "country_index.json");
+}
+
+// GET: één country ophalen (optioneel)
+app.get("/api/country-risk", (req, res) => {
+  const lang = req.query.lang || "nl";
+  const country = req.query.country;
+  if (!country) return res.status(400).json({ error: "country required" });
+
+  const file = countryIndexPath(lang);
+  const data = JSON.parse(fs.readFileSync(file, "utf8"));
+  const entry = data.find(e => e.country === country);
+  if (!entry) return res.status(404).json({ error: "not found" });
+
+  res.json(entry);
+});
+
+// POST: country-tekst opslaan
+app.post("/api/country-risk", requireAdmin, (req, res) => {
+  const { lang = "nl", country, body_md } = req.body;
+  if (!country || !body_md) {
+    return res.status(400).json({ error: "country and body_md required" });
+  }
+
+  const file = countryIndexPath(lang);
+  const data = JSON.parse(fs.readFileSync(file, "utf8"));
+
+  const idx = data.findIndex(e => e.country === country);
+  if (idx === -1) {
+    return res.status(404).json({ error: "Country not found" });
+  }
+
+  data[idx].body_md = body_md;
+  fs.writeFileSync(file, JSON.stringify(data, null, 2), "utf8");
+
+  res.json({ ok: true });
+});
+
+// start server
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log("API listening on port", PORT);
+});

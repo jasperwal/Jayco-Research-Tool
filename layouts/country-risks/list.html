@@ -1,0 +1,235 @@
+{{ define "title" }}Country Risks | {{ .Site.Title }}{{ end }}
+{{ define "main" }}
+  <aside class="sidebar">
+    <h3>Main Menu</h3>
+    <div id="mainMenu">
+      {{ range .Site.Params.mainSections }}
+        <a class="sidebar-item{{ if eq $.Section . }} active{{ end }}" href="/{{ . }}/">{{ . }}</a>
+      {{ end }}
+    </div>
+  </aside>
+
+  <section class="submenu-wrap">
+    <div class="submenu-header">Country Risks</div>
+    <input id="countrySearch" class="search-box" placeholder="Zoek land…">
+    <div id="countrySubmenu" class="submenu-scroll"></div>
+  </section>
+
+  <main class="content">
+    <div id="countryContent">
+      <div class="content-title">Country Risks</div>
+      <div class="content-inner">
+        Selecteer een land per werelddeel.
+      </div>
+    </div>
+  </main>
+
+<script>
+const countryUrl = "/country_index.json";
+let countryData = [];
+let countryGrouped = {};
+
+
+function mdToHtml(md) {
+  if (!md) return "";
+  let html = md;
+  html = html.replace(/^### (.*)$/gim, "<h3>$1</h3>");
+  html = html.replace(/^## (.*)$/gim, "<h2>$1</h2>");
+  html = html.replace(/^# (.*)$/gim, "<h1>$1</h1>");
+  html = html.replace(/\*\*(.*?)\*\*/gim, "<strong>$1</strong>");
+  html = html.replace(/\n\n- (.*)/gim, "<ul><li>$1</li></ul>");
+  html = html.replace(/\n- (.*)/gim, "<li>$1</li>");
+  html = html.replace(/\n/g, "<br>");
+  return html;
+}
+
+
+function groupByRegion(data) {
+  const g = {};
+  data.forEach(i => {
+    const r = i.region || "Unknown";
+    if (!g[r]) g[r] = [];
+    g[r].push(i);
+  });
+  const ordered = {};
+  const regions = Object.keys(g);
+  const preferred = ["Europe","Middle East","Asia","Africa","North America","South America","Oceania","Other","Unknown"];
+  regions.sort((a,b) => {
+    const ia = preferred.indexOf(a);
+    const ib = preferred.indexOf(b);
+    if (ia === -1 && ib === -1) return a.localeCompare(b);
+    if (ia === -1) return 1;
+    if (ib === -1) return -1;
+    return ia - ib;
+  });
+  regions.forEach(k => ordered[k] = g[k].sort((a,b)=>a.title.localeCompare(b.title)));
+  return ordered;
+}
+
+function renderCountry(filter="") {
+  const q = filter.toLowerCase();
+  const container = document.getElementById("countrySubmenu");
+  container.innerHTML = "";
+  Object.keys(countryGrouped).forEach(region => {
+    const block = document.createElement("div");
+    block.className = "sector-block";
+
+    const header = document.createElement("div");
+    header.className = "sector-header";
+    header.innerHTML = `<span>${region}</span><span>▶</span>`;
+
+    const items = document.createElement("div");
+    items.classList.add("sector-items","hidden");
+
+    let count = 0;
+    countryGrouped[region].forEach(item => {
+      const hay = (item.title + " " + (item.country||"")).toLowerCase();
+      if (q && !hay.includes(q)) return;
+      const el = document.createElement("div");
+      el.className = "submenu-item";
+      el.textContent = item.title;
+      el.onclick = () => {
+        document.querySelectorAll(".submenu-item").forEach(n=>n.classList.remove("active"));
+        el.classList.add("active");
+        openCountry(item);
+      };
+      items.appendChild(el);
+      count++;
+    });
+
+    if (!count) return;
+
+    header.onclick = () => {
+      const collapsed = items.classList.contains("hidden");
+      items.classList.toggle("hidden");
+      header.querySelector("span:last-child").textContent = collapsed ? "▼" : "▶";
+    };
+
+    block.appendChild(header);
+    block.appendChild(items);
+    container.appendChild(block);
+  });
+  if (!container.innerHTML.trim()) {
+    container.innerHTML = "<div class='helper'>Geen landen gevonden.</div>";
+  }
+}
+
+function openCountry(item) {
+  const panel = document.getElementById("countryContent");
+  const bodyHtml = mdToHtml(item.body || "");
+  panel.innerHTML = `
+    <div class="content-title">${item.title}</div>
+    <div class="content-meta">
+      Regio: ${item.region || "-"}
+    </div>
+    <div class="content-inner">${bodyHtml}</div>
+  `;
+}
+
+async function initCountry() {
+  try {
+    const res = await fetch(countryUrl);
+    countryData = await res.json();
+    countryGrouped = groupByRegion(countryData);
+    renderCountry();
+  } catch(e) {
+    document.getElementById("countrySubmenu").innerHTML =
+      "<div class='helper' style='color:red'>Kan country_index.json niet laden.</div>";
+  }
+}
+
+document.getElementById("countrySearch").addEventListener("input", e => renderCountry(e.target.value));
+initCountry();
+
+
+
+
+
+
+
+function getAdminToken() {
+  return localStorage.getItem("adminToken") || "";
+}
+
+function isAdmin() {
+  return !!getAdminToken();
+}
+
+// let op: zorg dat je huidige openCountry hierop lijkt
+function openCountry(entry) {
+  const { country, region, body } = entry; // of body_md → mdToHtml(body_md)
+  const panel = document.getElementById("countryContent");
+  const html = mdToHtml(body || "");
+
+  const editBtnHtml = isAdmin()
+    ? `<button id="editCountryBtn" class="btn-edit">Edit</button>`
+    : "";
+
+  panel.innerHTML = `
+    <div class="content-title">
+      ${country}
+      ${editBtnHtml}
+    </div>
+    <div class="content-meta">Region: ${region}</div>
+    <div class="content-inner">${html}</div>
+  `;
+
+  if (isAdmin()) {
+    document.getElementById("editCountryBtn").addEventListener("click", () => {
+      openEditModal({
+        title: "Edit country risk: " + country,
+        bodyMd: entry.body || "",
+        onSave: async (newMd) => {
+          const lang = window.location.pathname.startsWith("/en/") ? "en" : "nl";
+          const res = await fetch("/api/country-risk", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-admin-token": getAdminToken()
+            },
+            body: JSON.stringify({
+              lang,
+              country,
+              body_md: newMd
+            })
+          });
+          if (!res.ok) {
+            alert("Opslaan mislukt");
+            return;
+          }
+          // update lokale entry & UI
+          entry.body = newMd;
+          openCountry(entry);
+        }
+      });
+    });
+  }
+}
+
+// modal helpers
+function openEditModal({ title, bodyMd, onSave }) {
+  const modal = document.getElementById("editModal");
+  const titleEl = document.getElementById("editModalTitle");
+  const textarea = document.getElementById("editTextarea");
+  const closeBtn = document.getElementById("editModalClose");
+  const saveBtn = document.getElementById("editSaveBtn");
+
+  titleEl.textContent = title;
+  textarea.value = bodyMd || "";
+
+  modal.classList.remove("hidden");
+
+  const close = () => modal.classList.add("hidden");
+  closeBtn.onclick = close;
+  modal.querySelector(".modal-backdrop").onclick = close;
+
+  saveBtn.onclick = async () => {
+    const newMd = textarea.value;
+    await onSave(newMd);
+    // als onSave zelf faalt, kun je daar een alert doen
+    close();
+  };
+}
+
+</script>
+{{ end }}

@@ -1,0 +1,67 @@
+{{ define "title" }}Laws, Regulations, Policies | {{ .Site.Title }}{{ end }}
+{{ define "main" }}
+  <aside class="sidebar">
+    <h3>Main Menu</h3>
+    <div id="mainMenu">
+      {{ range .Site.Params.mainSections }}
+        <a class="sidebar-item{{ if eq $.Section . }} active{{ end }}" href="/{{ . }}/">{{ . }}</a>
+      {{ end }}
+    </div>
+  </aside>
+
+  <section class="submenu-wrap">
+    <div class="submenu-header">Laws, Regulations, Policies</div>
+    <div class="helper">Kies een categorie. Later kunnen hier meerdere documenten per categorie onder hangen.</div>
+    <div id="lawsSubmenu" class="submenu-scroll"></div>
+  </section>
+
+  <main class="content">
+    <div id="lawsContent">
+      <div class="content-title">Laws, Regulations, Policies</div>
+      <div class="content-inner">
+        Selecteer een categorie in de middelste kolom.
+      </div>
+    </div>
+  </main>
+
+<script>
+const lawsCategories = [
+  { id: "compliance-policy", label: "Compliance Policy", body: "Hier komen interne en externe compliance policies. Voeg later per policy een document of link toe." },
+  { id: "internal-guidelines", label: "Internal Guidelines", body: "Interne richtlijnen, procedures, handleidingen voor medewerkers." },
+  { id: "law-and-regulations", label: "Law and Regulations", body: "Overzicht van relevante wet- en regelgeving (AML, CTF, sancties, privacy, enz.)." },
+  { id: "supervisory-guidelines", label: "Supervisory Guidelines", body: "Richtlijnen en leidraden van toezichthouders (DNB, AFM, ECB, EBA, FATF, etc.)." }
+];
+
+function renderLawsMenu() {
+  const container = document.getElementById("lawsSubmenu");
+  container.innerHTML = "";
+  lawsCategories.forEach(cat => {
+    const block = document.createElement("div");
+    block.className = "sector-block";
+
+    const header = document.createElement("div");
+    header.className = "sector-header";
+    header.innerHTML = `<span>${cat.label}</span>`;
+
+    header.onclick = () => {
+      document.querySelectorAll("#lawsSubmenu .sector-header").forEach(h => h.classList.remove("active"));
+      header.classList.add("active");
+      openLawsCategory(cat);
+    };
+
+    block.appendChild(header);
+    container.appendChild(block);
+  });
+}
+
+function openLawsCategory(cat) {
+  const panel = document.getElementById("lawsContent");
+  panel.innerHTML = `
+    <div class="content-title">${cat.label}</div>
+    <div class="content-inner">${cat.body}</div>
+  `;
+}
+
+renderLawsMenu();
+</script>
+{{ end }}

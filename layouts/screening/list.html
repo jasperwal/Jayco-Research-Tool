@@ -1,0 +1,66 @@
+{{ define "title" }}Screening | {{ .Site.Title }}{{ end }}
+{{ define "main" }}
+  <aside class="sidebar">
+    <h3>Main Menu</h3>
+    <div id="mainMenu">
+      {{ range .Site.Params.mainSections }}
+        <a class="sidebar-item{{ if eq $.Section . }} active{{ end }}" href="/{{ . }}/">{{ . }}</a>
+      {{ end }}
+    </div>
+  </aside>
+
+  <section class="submenu-wrap">
+    <div class="submenu-header">Screening</div>
+    <div class="helper">Hoofdcategorieën voor screening-activiteiten.</div>
+    <div id="screenSubmenu" class="submenu-scroll"></div>
+  </section>
+
+  <main class="content">
+    <div id="screenContent">
+      <div class="content-title">Screening</div>
+      <div class="content-inner">
+        Kies een screeningcategorie in de middelste kolom.
+      </div>
+    </div>
+  </main>
+
+<script>
+const screenCategories = [
+  { id: "adverse-media", label: "Adverse Media", body: "Adverse media screening: negatieve nieuwsartikelen, reputatierisico's, onderzoeken, rechtszaken, enz." },
+  { id: "offshore-leaks", label: "Offshore Leaks", body: "Offshore leaks (Panama Papers, Paradise Papers, enz.) gebruiken voor herkomst vermogen en UBO-onderzoek." },
+  { id: "pep-sanctions", label: "PEP & Sanction Lists", body: "PEP- en sanctielijsten (OFAC, EU, UN, HMT, enz.) en hoe deze in het KYC-proces worden gebruikt." }
+];
+
+function renderScreenMenu() {
+  const container = document.getElementById("screenSubmenu");
+  container.innerHTML = "";
+  screenCategories.forEach(cat => {
+    const block = document.createElement("div");
+    block.className = "sector-block";
+
+    const header = document.createElement("div");
+    header.className = "sector-header";
+    header.innerHTML = `<span>${cat.label}</span>`;
+
+    header.onclick = () => {
+      document.querySelectorAll("#screenSubmenu .sector-header").forEach(h => h.classList.remove("active"));
+      header.classList.add("active");
+      openScreenCategory(cat);
+    };
+
+    block.appendChild(header);
+    container.appendChild(block);
+  });
+}
+
+function openScreenCategory(cat) {
+  const panel = document.getElementById("screenContent");
+  panel.innerHTML = `
+    <div class="content-title">${cat.label}</div>
+    <div class="content-inner">${cat.body}</div>
+  `;
+}
+
+renderScreenMenu();
+</script>
+{{ end }}

@@ -1,0 +1,141 @@
+{{ define "title" }}Industry Risks | {{ .Site.Title }}{{ end }}
+{{ define "main" }}
+  <aside class="sidebar">
+    <h3>Main Menu</h3>
+    <div id="mainMenu">
+      {{ range .Site.Params.mainSections }}
+        <a class="sidebar-item{{ if eq $.Section . }} active{{ end }}" href="/{{ . }}/">{{ . }}</a>
+      {{ end }}
+    </div>
+  </aside>
+
+  <section class="submenu-wrap">
+    <div class="submenu-header">Industry Risks</div>
+    <input id="searchBox" class="search-box" placeholder="Zoek sector of risk…">
+    <div id="submenu" class="submenu-scroll"></div>
+  </section>
+
+  <main class="content">
+    <div id="content">
+      <div class="content-title">Industry Risks</div>
+      <div class="content-inner">
+        Selecteer links een sector / risk type.
+      </div>
+    </div>
+  </main>
+
+<script>
+const industryUrl = "/industry_index.json";
+let industryData = [];
+let industryGrouped = {};
+
+
+function mdToHtml(md) {
+  if (!md) return "";
+  let html = md;
+  html = html.replace(/^### (.*)$/gim, "<h3>$1</h3>");
+  html = html.replace(/^## (.*)$/gim, "<h2>$1</h2>");
+  html = html.replace(/^# (.*)$/gim, "<h1>$1</h1>");
+  html = html.replace(/\*\*(.*?)\*\*/gim, "<strong>$1</strong>");
+  html = html.replace(/\n\n- (.*)/gim, "<ul><li>$1</li></ul>");
+  html = html.replace(/\n- (.*)/gim, "<li>$1</li>");
+  html = html.replace(/\n/g, "<br>");
+  return html;
+}
+
+
+function groupBySector(data) {
+  const g = {};
+  data.forEach(i => {
+    const s = i.sector || "Other";
+    if (!g[s]) g[s] = [];
+    g[s].push(i);
+  });
+  const ordered = {};
+  Object.keys(g).sort().forEach(k => ordered[k] = g[k].sort((a,b)=>a.title.localeCompare(b.title)));
+  return ordered;
+}
+
+function renderSubmenu(filter="") {
+  const q = filter.toLowerCase();
+  const container = document.getElementById("submenu");
+  container.innerHTML = "";
+  Object.keys(industryGrouped).forEach(sector => {
+    const block = document.createElement("div");
+    block.className = "sector-block";
+
+    const header = document.createElement("div");
+    header.className = "sector-header";
+    header.innerHTML = `<span>${sector}</span><span>▶</span>`;
+
+    const items = document.createElement("div");
+    items.classList.add("sector-items","hidden");
+
+    let count = 0;
+    industryGrouped[sector].forEach(item => {
+      const hay = (item.title + " " + (item.risk_type||"")).toLowerCase();
+      if (q && !hay.includes(q)) return;
+      const el = document.createElement("div");
+      el.className = "submenu-item";
+      el.textContent = item.risk_type || item.title;
+      el.onclick = () => {
+        document.querySelectorAll(".submenu-item").forEach(n=>n.classList.remove("active"));
+        el.classList.add("active");
+        openItem(item);
+      };
+      items.appendChild(el);
+      count++;
+    });
+
+    if (!count) return;
+
+    header.onclick = () => {
+      const collapsed = items.classList.contains("hidden");
+      items.classList.toggle("hidden");
+      header.querySelector("span:last-child").textContent = collapsed ? "▼" : "▶";
+    };
+
+    block.appendChild(header);
+    block.appendChild(items);
+    container.appendChild(block);
+  });
+  if (!container.innerHTML.trim()) {
+    container.innerHTML = "<div class='helper'>Geen resultaten gevonden.</div>";
+  }
+}
+
+function openItem(item) {
+  const panel = document.getElementById("content");
+  const bodyHtml = mdToHtml(item.body || "");
+  panel.innerHTML = `
+    <div class="content-title">${item.title}</div>
+    <div class="content-meta">
+      Sector: ${item.sector || "-"}
+      ${item.risk_type ? " · Risk type: " + item.risk_type : ""}
+    </div>
+    <div class="content-inner">${bodyHtml}</div>
+  `;
+}
+
+async function init() {
+  try {
+    const res = await fetch(industryUrl);
+    const raw = await res.json();
+    // Filter out Adverse media items; those will be shown under 'Other'
+    industryData = raw.filter(item => {
+      const t = (item.title || "").toLowerCase();
+      const r = (item.risk_type || "").toLowerCase();
+      return !t.startsWith("adverse media") && !r.startsWith("adverse media");
+    });
+    industryGrouped = groupBySector(industryData);
+    renderSubmenu();
+  } catch(e) {
+    document.getElementById("submenu").innerHTML =
+      "<div class='helper' style='color:red'>Kan industry_index.json niet laden.</div>";
+  }
+}
+
+document.getElementById("searchBox").addEventListener("input", e => renderSubmenu(e.target.value));
+init();
+</script>
+{{ end }}

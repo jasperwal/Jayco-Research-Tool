@@ -1,0 +1,134 @@
+{{ define "title" }}Supervision | {{ .Site.Title }}{{ end }}
+{{ define "main" }}
+  <aside class="sidebar">
+    <h3>Main Menu</h3>
+    <div id="mainMenu">
+      {{ range .Site.Params.mainSections }}
+        <a class="sidebar-item{{ if eq $.Section . }} active{{ end }}" href="/{{ . }}/">{{ . }}</a>
+      {{ end }}
+    </div>
+  </aside>
+
+  <section class="submenu-wrap">
+    <div class="submenu-header">Supervision</div>
+    <input id="supSearch" class="search-box" placeholder="Zoek toezichthouder…">
+    <div id="supSubmenu" class="submenu-scroll"></div>
+  </section>
+
+  <main class="content">
+    <div id="supContent">
+      <div class="content-title">Supervision</div>
+      <div class="content-inner">
+        Selecteer een toezichthouder of beurs.
+      </div>
+    </div>
+  </main>
+
+<script>
+const supUrl = "/supervision_index.json";
+let supData = [];
+let supGrouped = {};
+
+
+function mdToHtml(md) {
+  if (!md) return "";
+  let html = md;
+  html = html.replace(/^### (.*)$/gim, "<h3>$1</h3>");
+  html = html.replace(/^## (.*)$/gim, "<h2>$1</h2>");
+  html = html.replace(/^# (.*)$/gim, "<h1>$1</h1>");
+  html = html.replace(/\*\*(.*?)\*\*/gim, "<strong>$1</strong>");
+  html = html.replace(/\n\n- (.*)/gim, "<ul><li>$1</li></ul>");
+  html = html.replace(/\n- (.*)/gim, "<li>$1</li>");
+  html = html.replace(/\n/g, "<br>");
+  return html;
+}
+
+
+function groupByCategory(data) {
+  const g = {};
+  data.forEach(i => {
+    const c = i.category || "Other";
+    if (!g[c]) g[c] = [];
+    g[c].push(i);
+  });
+  const ordered = {};
+  Object.keys(g).sort().forEach(k => ordered[k] = g[k].sort((a,b)=>a.title.localeCompare(b.title)));
+  return ordered;
+}
+
+function renderSup(filter="") {
+  const q = filter.toLowerCase();
+  const container = document.getElementById("supSubmenu");
+  container.innerHTML = "";
+  Object.keys(supGrouped).forEach(cat => {
+    const block = document.createElement("div");
+    block.className = "sector-block";
+
+    const header = document.createElement("div");
+    header.className = "sector-header";
+    header.innerHTML = `<span>${cat}</span><span>▶</span>`;
+
+    const items = document.createElement("div");
+    items.classList.add("sector-items","hidden");
+
+    let count = 0;
+    supGrouped[cat].forEach(item => {
+      const hay = (item.title + " " + (item.country||"")).toLowerCase();
+      if (q && !hay.includes(q)) return;
+      const el = document.createElement("div");
+      el.className = "submenu-item";
+      el.textContent = item.title;
+      el.onclick = () => {
+        document.querySelectorAll(".submenu-item").forEach(n=>n.classList.remove("active"));
+        el.classList.add("active");
+        openSup(item);
+      };
+      items.appendChild(el);
+      count++;
+    });
+
+    if (!count) return;
+
+    header.onclick = () => {
+      const collapsed = items.classList.contains("hidden");
+      items.classList.toggle("hidden");
+      header.querySelector("span:last-child").textContent = collapsed ? "▼" : "▶";
+    };
+
+    block.appendChild(header);
+    block.appendChild(items);
+    container.appendChild(block);
+  });
+  if (!container.innerHTML.trim()) {
+    container.innerHTML = "<div class='helper'>Geen toezichthouders gevonden.</div>";
+  }
+}
+
+function openSup(item) {
+  const panel = document.getElementById("supContent");
+  const bodyHtml = mdToHtml(item.body || "");
+  panel.innerHTML = `
+    <div class="content-title">${item.title}</div>
+    <div class="content-meta">
+      ${item.country ? "Country: " + item.country : ""} · Category: ${item.category || "-"}
+    </div>
+    <div class="content-inner">${bodyHtml}</div>
+  `;
+}
+
+async function initSup() {
+  try {
+    const res = await fetch(supUrl);
+    supData = await res.json();
+    supGrouped = groupByCategory(supData);
+    renderSup();
+  } catch(e) {
+    document.getElementById("supSubmenu").innerHTML =
+      "<div class='helper' style='color:red'>Kan supervision_index.json niet laden.</div>";
+  }
+}
+
+document.getElementById("supSearch").addEventListener("input", e => renderSup(e.target.value));
+initSup();
+</script>
+{{ end }}
