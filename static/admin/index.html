@@ -1,9 +1,12 @@
-<!doctype html>
+ <!doctype html>
 <html lang="nl">
   <head>
     <meta charset="utf-8" />
     <title>Jayco Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Vertel Decap/Netlify CMS expliciet waar config.yml staat -->
+    <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
 
     <style>
       /* Hier je CSS */
@@ -47,63 +50,13 @@
     <!-- Netlify Identity widget -->
     <div data-netlify-identity-widget></div>
 
+    <!-- Netlify Identity script -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-    <!-- heel belangrijk: handmatige init AAN zetten vóór decap-cms script -->
-    <script>
-      window.CMS_MANUAL_INIT = true;
-    </script>
 
     <!-- Decap CMS (voorheen Netlify CMS) -->
     <script src="https://unpkg.com/decap-cms-app@^3.1.2/dist/decap-cms-app.js"></script>
 
     <script>
-      // Hier configureren we Decap CMS volledig in JavaScript
-      // zodat er GEEN config.yml meer nodig is
-      CMS.init({
-        config: {
-          // Belangrijk: vertel CMS dat er geen config.yml geladen hoeft te worden
-          load_config_file: false,
-
-          backend: {
-            name: "git-gateway",
-            branch: "main", // pas aan als jouw branch anders heet
-          },
-
-          media_folder: "static/uploads",
-          public_folder: "/uploads",
-
-          collections: [
-            {
-              name: "standard_texts_nl",
-              label: "Standaard teksten (NL)",
-              label_singular: "Standaard tekst (NL)",
-              folder: "content/nl/standaard-teksten",
-              create: false,
-              slug: "{{slug}}",
-              extension: "md",
-              fields: [
-                { name: "title", label: "Titel", widget: "string" },
-                { name: "body", label: "Tekst", widget: "markdown" },
-              ],
-            },
-            {
-              name: "standard_texts_en",
-              label: "Standaard teksten (EN)",
-              label_singular: "Standaard tekst (EN)",
-              folder: "content/en/standaard-teksten",
-              create: false,
-              slug: "{{slug}}",
-              extension: "md",
-              fields: [
-                { name: "title", label: "Title", widget: "string" },
-                { name: "body", label: "Text", widget: "markdown" },
-              ],
-            },
-          ],
-        },
-      });
-
       // Optioneel: redirect na login via Netlify Identity
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", (user) => {
