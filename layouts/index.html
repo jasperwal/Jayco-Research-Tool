@@ -1,0 +1,48 @@
+{{ define "title" }}Home | Jayco Research Tool{{ end }}
+
+{{ define "main" }}
+<div class="app-main">
+  <!-- LINKER KOLOM: MAIN MENU -->
+  <aside class="sidebar-main">
+    <div class="sidebar-title">Main Menu</div>
+    <ul class="nav-main">
+      <li><a href="/company-registers/">company-registers</a></li>
+      <li><a href="/country-risks/">country-risks</a></li>
+      <li><a href="/industry-risks/">industry-risks</a></li>
+      <li><a href="/laws-regulations-policies/">laws-regulations-policies</a></li>
+      <li><a href="/screening/">screening</a></li>
+      <li><a href="/supervision/">supervision</a></li>
+      <li><a href="/other/">other</a></li>
+      <li><a href="/standaard-teksten/">standaard-teksten</a></li>
+    </ul>
+  </aside>
+
+  <!-- MIDDEN + RECHTS -->
+  <div class="content-frame">
+    <!-- MIDDEN: SUBMENU / UITLEG (GEEN KOPJE) -->
+    <section class="column column-left">
+      <div class="page-body">
+        <p>
+          Deze kolom is bedoeld voor submenu’s (sectoren, landen, categorieën)
+          zodra je in het linkermenu een sectie kiest.
+        </p>
+      </div>
+    </section>
+
+    <!-- RECHTS: HOOFDTEKST -->
+    <main class="column column-right">
+      <h1 class="page-heading">KCP Research Tool</h1>
+      <p class="page-subheading">
+        Gebruik het linkermenu om een sectie te kiezen, bijvoorbeeld
+        <strong>Industry Risks</strong> of <strong>Country Risks</strong>.
+      </p>
+      <div class="page-body">
+        <p>
+          In de middelste kolom zie je dan een <em>collapsible</em> submenu
+          (sectoren, regio's, categorieën). In de rechterkolom verschijnt de detailtekst.
+        </p>
+      </div>
+    </main>
+  </div>
+</div>
+{{ end }}
