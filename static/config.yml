@@ -1,0 +1,33 @@
+ backend:
+  name: git-gateway
+  branch: main
+
+local_backend: false
+
+media_folder: "static/uploads"
+public_folder: "/uploads"
+
+collections:
+  # 1) Standaard teksten in het Nederlands
+  - name: "standard_texts_nl"
+    label: "Standaard texten (NL)"
+    label_singular: "Standaard tekst (NL)"
+    folder: "content/nl/standaard-teksten"
+    create: false
+    slug: "{{slug}}"
+    extension: "md"
+    fields:
+      - { name: "title", label: "Titel", widget: "string" }
+      - { name: "body", label: "Tekst", widget: "markdown" }
+
+  # 2) Standaard teksten in het Engels
+  - name: "standard_texts_en"
+    label: "Standaard texten (EN)"
+    label_singular: "Standaard tekst (EN)"
+    folder: "content/en/standaard-teksten"
+    create: false
+    slug: "{{slug}}"
+    extension: "md"
+    fields:
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "body", label: "Text", widget: "markdown" }
