@@ -31,35 +31,10 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.18);
     }
 
-    /* HOOFDMENU (horizontaal) */
-    .main-nav {
-      width: 100%;
-      background: #0A4FFF;
-      padding: 0 12px 6px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-    }
-
-    .main-nav a {
-      color: #E5E7EB;
-      font-size: 13px;
-      text-decoration: none;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-    }
-
-    .main-nav a:hover {
-      background: rgba(255,255,255,0.16);
-      text-decoration: none;
-    }
-
     .layout {
       display: grid;
       grid-template-columns: 220px 280px 1fr;
-      height: calc(100vh - 40px - 30px); /* topbar + nav */
+      height: calc(100vh - 40px);
     }
 
     .sidebar {
@@ -234,21 +209,22 @@
     {{ .Site.Title }}
   </div>
 
-  <!-- HOOFDMENU BOVENIN -->
-  <nav class="main-nav">
-    {{ with .Site.Menus.main }}
-      {{ range . }}
-        <a href="{{ .URL | relURL }}">{{ .Name }}</a>
-      {{ end }}
-    {{ else }}
-      <span style="font-size:12px; color:#CBD5E0;">
-        (Geen menu.main items gedefinieerd in config)
-      </span>
-    {{ end }}
-  </nav>
-
-  <!-- Pagina-inhoud in je 3-koloms layout -->
   <div class="layout">
+    <!-- LINKER KOLOM: MENU -->
+    <aside class="sidebar">
+      <h3>Menu</h3>
+      {{ with .Site.Menus.main }}
+        {{ range . }}
+          <a class="sidebar-item" href="{{ .URL | relURL }}">{{ .Name }}</a>
+        {{ end }}
+      {{ else }}
+        <div style="font-size: 13px; color:#718096;">
+          Geen menu-items gevonden (menu.main).
+        </div>
+      {{ end }}
+    </aside>
+
+    <!-- REST VAN DE PAGINA (middelste + rechter kolom) -->
     {{ .Content }}
   </div>
 </body>
