@@ -1,6 +1,3 @@
-baseURL = "/"
-languageCode = "en-us"
+baseURL = "https://timely-sunshine-a06224.netlify.app/"
+languageCode = "nl-nl"
 title = "Jayco Research Tool"
-
-[params]
-  mainSections = ["company-registers","country-risks","industry-risks","laws-regulations-policies","screening","supervision","other","standaard-teksten"]
