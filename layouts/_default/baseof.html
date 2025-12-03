@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
+  <title>{{ .Site.Title }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -204,4 +204,13 @@
     }
   </style>
 </head>
-<body
+<body>
+  <div class="topbar">
+    {{ .Site.Title }}
+  </div>
+
+  <div class="layout">
+    {{ .Content }}
+  </div>
+</body>
+</html>
