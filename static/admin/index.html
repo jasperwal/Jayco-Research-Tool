@@ -1,15 +1,14 @@
- <!doctype html>
+<!doctype html>
 <html lang="nl">
   <head>
     <meta charset="utf-8" />
     <title>Jayco Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Vertel Decap/Netlify CMS expliciet waar config.yml staat -->
+    <!-- Extra info voor Decap, mag blijven staan -->
     <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
 
     <style>
-      /* Hier je CSS */
       body {
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
           sans-serif;
@@ -57,16 +56,28 @@
     <script src="https://unpkg.com/decap-cms-app@^3.1.2/dist/decap-cms-app.js"></script>
 
     <script>
-      // Optioneel: redirect na login via Netlify Identity
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", (user) => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
+      // Dwing Decap om /admin/config.yml te gebruiken
+      window.CMS_MANUAL_INIT = true;
+
+      window.addEventListener("load", function () {
+        CMS.init({
+          config: {
+            load_config_file: true,
+            config_path: "/admin/config.yml",
+          },
         });
-      }
+
+        // Optioneel: redirect na login via Netlify Identity
+        if (window.netlifyIdentity) {
+          window.netlifyIdentity.on("init", (user) => {
+            if (!user) {
+              window.netlifyIdentity.on("login", () => {
+                document.location.href = "/admin/";
+              });
+            }
+          });
+        }
+      });
     </script>
   </body>
 </html>
