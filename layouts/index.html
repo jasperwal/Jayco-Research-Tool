@@ -1,0 +1,85 @@
+{{ define "title" }}{{ .Site.Title }}{{ end }}
+
+{{ define "main" }}
+<section style="margin-bottom: 32px;">
+  <h1 style="font-size: 1.8rem; margin-bottom: 8px;">
+    Jayco Research Tool
+  </h1>
+  <p style="max-width: 60ch; line-height: 1.5; margin-bottom: 16px;">
+    Overzicht van landenrisico’s, sectorrisico’s en standaardteksten voor
+    KYC/CDD-onderzoek. Gebruik de navigatie bovenin om snel naar de juiste
+    categorie te gaan.
+  </p>
+
+  {{ if .Content }}
+  <div style="margin-top: 16px;">
+    {{ .Content }}
+  </div>
+  {{ end }}
+</section>
+
+<section style="display: grid; gap: 16px; grid-template-columns: repeat(auto-fit,minmax(220px,1fr));">
+  <a
+    href="{{ "/landen/" | relURL }}"
+    style="
+      display: block;
+      padding: 16px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      text-decoration: none;
+    "
+  >
+    <h2 style="margin: 0 0 8px; font-size: 1.1rem;">Landenrisico’s</h2>
+    <p style="margin: 0; font-size: 0.9rem; line-height: 1.4;">
+      Samenvattingen en standaardteksten per land (CPI-score, sancties, FATF,
+      enz.).
+    </p>
+  </a>
+
+  <a
+    href="{{ "/sectoren/" | relURL }}"
+    style="
+      display: block;
+      padding: 16px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      text-decoration: none;
+    "
+  >
+    <h2 style="margin: 0 0 8px; font-size: 1.1rem;">Sectorrisico’s</h2>
+    <p style="margin: 0; font-size: 0.9rem; line-height: 1.4;">
+      Risico-profielen per sector, inclusief voorbeelden en aandachtspunten.
+    </p>
+  </a>
+
+  <a
+    href="{{ "/standaard-teksten/" | relURL }}"
+    style="
+      display: block;
+      padding: 16px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      text-decoration: none;
+    "
+  >
+    <h2 style="margin: 0 0 8px; font-size: 1.1rem;">Standaardteksten</h2>
+    <p style="margin: 0; font-size: 0.9rem; line-height: 1.4;">
+      Herbruikbare formuleringen voor reviews, memo’s en CDD-rapportages.
+    </p>
+  </a>
+</section>
+
+<section style="margin-top: 32px;">
+  <h2 style="font-size: 1.2rem; margin-bottom: 12px;">Laatste updates</h2>
+  <ul style="list-style: none; padding: 0; margin: 0;">
+    {{ range first 6 .Site.RegularPages }}
+    <li style="margin-bottom: 6px; font-size: 0.95rem;">
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+    </li>
+    {{ end }}
+  </ul>
+</section>
+{{ end }}
