@@ -1,0 +1,64 @@
+{{ define "title" }}{{ .Title }} | {{ .Site.Title }}{{ end }}
+
+{{ define "main" }}
+  <div class="app-main">
+    <!-- Linker hoofdmenu -->
+    <aside class="sidebar-main">
+      <div class="sidebar-title">Hoofdmenu</div>
+      <ul class="nav-main">
+        <li><a href="/company-registers/">Company Registers</a></li>
+        <li><a href="/country-risks/">Country Risks</a></li>
+        <li><a href="/industry-risks/">Industry Risks</a></li>
+        <li><a href="/laws-regulations-policies/">Laws, Regulations, Policies</a></li>
+        <li><a href="/screening/">Screening</a></li>
+        <li><a href="/supervision/">Supervision</a></li>
+        <li><a href="/standaard-teksten/">Standaard texten</a></li>
+        <li><a href="/other/">Other</a></li>
+      </ul>
+    </aside>
+
+    <!-- Midden + rechts -->
+    <main class="content-frame">
+      <!-- Middenkolom: jouw “midden menu” -->
+      <section class="column column-left">
+        <div class="column-title">Overzicht</div>
+
+        {{ if .Pages }}
+          <ul class="item-list">
+            {{ range .Pages.ByTitle }}
+              <li>
+                <a href="{{ .RelPermalink }}">
+                  {{ .Title }}
+                </a>
+              </li>
+            {{ end }}
+          </ul>
+        {{ else }}
+          <p class="page-subheading">Geen items gevonden in deze categorie.</p>
+        {{ end }}
+      </section>
+
+      <!-- Rechterkolom: content / uitleg -->
+      <section class="column column-right">
+        <div class="badge">Sectie</div>
+        <h1 class="page-heading">{{ .Title }}</h1>
+
+        {{ with .Content }}
+          <div class="page-body">
+            {{ . }}
+          </div>
+        {{ else }}
+          <p class="page-subheading">
+            Selecteer een item in de middelste kolom om details te bekijken.
+          </p>
+          <div class="page-body">
+            <p>
+              Deze sectie bevat bronnen en verwijzingen voor <strong>{{ .Title }}</strong>.
+              Gebruik de middelste kolom om een land, sector of onderwerp te kiezen.
+            </p>
+          </div>
+        {{ end }}
+      </section>
+    </main>
+  </div>
+{{ end }}
