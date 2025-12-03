@@ -4,7 +4,7 @@ backend:
 media_folder: "static/uploads"
 public_folder: "/uploads"
 collections:
-  - name: standard_texts_nl
+  - name: jayco_standard_texts_nl_1
     label: "Standaard texten (NL)"
     label_singular: "Standaard tekst (NL)"
     folder: content/nl/standaard-teksten
@@ -18,3 +18,4 @@ collections:
       - name: body
         label: "Tekst"
         widget: markdown
+
