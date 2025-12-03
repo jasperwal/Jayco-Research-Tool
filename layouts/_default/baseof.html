@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+ <!DOCTYPE html>
+<html lang="nl">
 <head>
   <meta charset="UTF-8">
   <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
@@ -129,7 +129,6 @@
     color: #718096;
     margin-top: 6px;
   }
-  /* Collapsible blocks */
   .sector-block {
     margin-bottom: 8px;
     border-bottom: 1px solid #E3E9F5;
@@ -177,7 +176,23 @@
   <div class="topbar">
     {{ .Site.Title }}
   </div>
+
   <div class="layout">
+    <!-- linker kolom: main menu -->
+    <aside class="sidebar">
+      <h3>Menu</h3>
+      {{ with .Site.Menus.main }}
+        {{ range . }}
+          <a class="sidebar-item" href="{{ .URL | relURL }}">{{ .Name }}</a>
+        {{ end }}
+      {{ else }}
+        <div style="font-size: 13px; color:#718096;">
+          Geen menu-items (menu.main) gevonden.
+        </div>
+      {{ end }}
+    </aside>
+
+    <!-- middelste + rechter kolom worden vanuit templates gevuld -->
     {{ block "main" . }}{{ end }}
   </div>
 </body>
