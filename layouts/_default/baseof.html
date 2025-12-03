@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
+  <title>{{ block "title" . }}Jayco Research Tool{{ end }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
   * {
@@ -129,7 +129,6 @@
     color: #718096;
     margin-top: 6px;
   }
-  /* Collapsible blocks */
   .sector-block {
     margin-bottom: 8px;
     border-bottom: 1px solid #E3E9F5;
@@ -175,10 +174,41 @@
 </head>
 <body>
   <div class="topbar">
-    {{ .Site.Title }}
+    Jayco Research Tool
   </div>
+
   <div class="layout">
-    {{ block "main" . }}{{ end }}
+    <!-- LINKERKOLOM: VAST MAIN MENU -->
+    <aside class="sidebar">
+      <h3>Main Menu</h3>
+      <div id="mainMenu">
+        <a class="sidebar-item" href="/company-registers/">company-registers</a>
+        <a class="sidebar-item" href="/country-risks/">country-risks</a>
+        <a class="sidebar-item" href="/industry-risks/">industry-risks</a>
+        <a class="sidebar-item" href="/laws-regulations-policies/">laws-regulations-policies</a>
+        <a class="sidebar-item" href="/screening/">screening</a>
+        <a class="sidebar-item" href="/supervision/">supervision</a>
+        <a class="sidebar-item" href="/other/">other</a>
+        <a class="sidebar-item" href="/standaard-teksten/">standaard-teksten</a>
+      </div>
+      <div class="helper" style="margin-top:10px;">
+        Kies links een sectie om de research tool te gebruiken.
+      </div>
+    </aside>
+
+    <!-- MIDDELSTE KOLOM: SUBMENU (per pagina te overschrijven) -->
+    {{ block "submenu" . }}
+    <section class="submenu-wrap">
+      <div class="submenu-header">Menu</div>
+      <div class="helper">Selecteer een item in het linkermenu.</div>
+    </section>
+    {{ end }}
+
+    <!-- RECHTERKOLOM: MAIN CONTENT (per pagina te overschrijven) -->
+    <main class="content">
+      {{ block "main" . }}
+      {{ end }}
+    </main>
   </div>
 </body>
 </html>
