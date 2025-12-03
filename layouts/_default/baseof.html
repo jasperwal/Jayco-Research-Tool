@@ -1,213 +1,140 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <title>{{ block "title" . }}Jayco Research Tool{{ end }}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ block "title" . }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
+    :root {
+      --bg: #0b1120;
+      --bg-alt: #020617;
+      --border: #1e293b;
+      --accent: #38bdf8;
+      --accent-soft: #0ea5e9;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
     }
+    * { box-sizing: border-box; }
     body {
-      background: #F3F5FA;
-      color: #1F2933;
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
     }
-    .topbar {
-      width: 100%;
-      height: 40px;
-      background: #0A4FFF;
-      color: #FFFFFF;
-      display: flex;
-      align-items: center;
-      padding: 0 18px;
-      font-size: 17px;
-      font-weight: 600;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.18);
-    }
-    .layout {
-      display: grid;
-      grid-template-columns: 220px 280px 1fr;
-      height: calc(100vh - 40px);
-    }
-    .sidebar {
-      background: #F7F9FC;
-      border-right: 1px solid #D8E0F0;
-      padding: 16px 14px;
-    }
-    .sidebar h3 {
-      font-size: 14px;
-      margin-bottom: 8px;
-      color: #4A5568;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-    .sidebar-item {
-      display: block;
-      padding: 7px 8px;
-      margin-bottom: 4px;
-      font-size: 14px;
-      color: #12355B;
-      text-decoration: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .sidebar-item:hover {
-      background: #E4EDFF;
-    }
-    .sidebar-item.active {
-      background: #D4E2FF;
-      font-weight: 600;
-    }
-    .submenu-wrap {
-      background: #FFFFFF;
-      border-right: 1px solid #E1E7F0;
-      padding: 14px 14px 10px 14px;
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: var(--accent); }
+    .app-shell {
       display: flex;
       flex-direction: column;
-      height: 100%;
+      min-height: 100vh;
     }
-    .submenu-header {
-      font-size: 15px;
-      font-weight: 600;
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--bg-alt);
+      border-bottom: 1px solid var(--border);
+    }
+    .app-title { font-size: 16px; font-weight: 600; }
+    .app-subtitle { font-size: 12px; color: var(--muted); }
+    .app-main {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+    }
+    .sidebar-main {
+      width: 220px;
+      border-right: 1px solid var(--border);
+      background: #020617;
+      padding: 12px 10px;
+    }
+    .sidebar-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
       margin-bottom: 6px;
-      color: #1A365D;
     }
-    .search-box {
-      width: 100%;
-      padding: 7px 9px;
-      margin-bottom: 10px;
-      border-radius: 4px;
-      border: 1px solid #CBD5E0;
+    .nav-main {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .nav-main li { margin-bottom: 4px; }
+    .nav-main a {
+      display: block;
+      padding: 6px 8px;
+      border-radius: 6px;
       font-size: 14px;
+      color: #e5e7eb;
     }
-    .submenu-scroll {
-      overflow-y: auto;
-      padding-right: 4px;
+    .nav-main a:hover {
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--accent-soft);
     }
-    .content {
-      padding: 22px 26px;
-      overflow-y: auto;
+    .content-frame {
+      flex: 1;
+      display: flex;
+      min-width: 0;
     }
-    .content-title {
-      font-size: 22px;
-      margin-bottom: 4px;
-      color: #102A43;
+    .column {
+      padding: 12px 14px;
+      border-right: 1px solid var(--border);
+      min-width: 0;
     }
-    .content-meta {
+    .column:last-child { border-right: none; }
+    .column-left {
+      width: 260px;
+      background: #020617;
+    }
+    .column-right {
+      flex: 1;
+      background: #020617;
+    }
+    .page-heading {
+      font-size: 18px;
+      margin: 0 0 8px 0;
+    }
+    .page-subheading {
       font-size: 13px;
-      color: #6B7280;
+      color: var(--muted);
       margin-bottom: 12px;
     }
-    .content-inner {
+    .page-body {
       font-size: 14px;
-      line-height: 1.6;
+      line-height: 1.5;
     }
-    .content-inner h2 {
-      font-size: 18px;
-      margin: 10px 0 4px;
+    .page-body p {
+      margin-top: 0;
+      margin-bottom: 10px;
     }
-    .content-inner h3 {
-      font-size: 16px;
-      margin: 8px 0 4px;
-    }
-    .content-inner strong {
-      font-weight: 600;
-    }
-    .content-inner li {
-      margin-left: 18px;
-    }
-    .badge-path {
-      font-size: 11px;
-      color: #9CA3AF;
-      margin-top: 4px;
-    }
-    .helper {
-      font-size: 12px;
-      color: #718096;
-      margin-top: 6px;
-    }
-    .sector-block {
-      margin-bottom: 8px;
-      border-bottom: 1px solid #E3E9F5;
-      padding-bottom: 4px;
-    }
-    .sector-header {
-      font-size: 13.5px;
-      font-weight: 600;
-      color: #16407A;
-      padding: 6px 4px;
-      cursor: pointer;
-      border-radius: 3px;
-      display: flex;
-      justify-content: space-between;
-      user-select: none;
-    }
-    .sector-header:hover {
-      background: #E4EDFF;
-    }
-    .sector-items {
-      padding-left: 10px;
-      margin-top: 4px;
-    }
-    .sector-items.hidden {
-      display: none;
-    }
-    .submenu-item {
-      padding: 4px 5px;
-      border-radius: 3px;
-      cursor: pointer;
-      font-size: 13px;
-      color: #1A4B82;
-    }
-    .submenu-item:hover {
-      background: #EDF3FF;
-    }
-    .submenu-item.active {
-      background: #D6E5FF !important;
-      font-weight: 600;
-      border-left: 3px solid #0A4FFF;
+    @media (max-width: 960px) {
+      .app-main { flex-direction: column; }
+      .sidebar-main {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .content-frame { flex-direction: column; }
+      .column-left {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
     }
   </style>
 </head>
 <body>
-  <div class="topbar">
-    Jayco Research Tool
-  </div>
-
-  <div class="layout">
-    <!-- Linker kolom: vast main menu -->
-    <aside class="sidebar">
-      <h3>Main Menu</h3>
-      <div id="mainMenu">
-        <a class="sidebar-item" href="/company-registers/">company-registers</a>
-        <a class="sidebar-item" href="/country-risks/">country-risks</a>
-        <a class="sidebar-item" href="/industry-risks/">industry-risks</a>
-        <a class="sidebar-item" href="/laws-regulations-policies/">laws-regulations-policies</a>
-        <a class="sidebar-item" href="/screening/">screening</a>
-        <a class="sidebar-item" href="/supervision/">supervision</a>
-        <a class="sidebar-item" href="/other/">other</a>
-        <a class="sidebar-item" href="/standaard-teksten/">standaard-teksten</a>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <div class="app-title">{{ .Site.Title }}</div>
+        <div class="app-subtitle">Jayco Research Tool – KYC / AML bronnen &amp; risico’s</div>
       </div>
-      <div class="helper" style="margin-top:10px;">
-        Kies links een sectie om de research tool te gebruiken.
-      </div>
-    </aside>
+    </header>
 
-    <!-- Middelste kolom: submenu (door index.html ingevuld) -->
-    {{ block "submenu" . }}
-    <section class="submenu-wrap">
-      <div class="submenu-header">Menu</div>
-      <div class="helper">Selecteer een item in het linkermenu.</div>
-    </section>
-    {{ end }}
-
-    <!-- Rechter kolom: main (door index.html ingevuld) -->
-    <main class="content">
-      {{ block "main" . }}{{ end }}
-    </main>
+    {{ block "main" . }}{{ end }}
   </div>
 </body>
 </html>
