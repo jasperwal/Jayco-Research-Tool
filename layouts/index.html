@@ -49,3 +49,250 @@
       display: block;
       padding: 7px 8px;
       margin-bottom: 4px;
+      font-size: 14px;
+      color: #12355B;
+      text-decoration: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .sidebar-item:hover {
+      background: #E4EDFF;
+    }
+
+    .submenu-wrap {
+      background: #FFFFFF;
+      border-right: 1px solid #E1E7F0;
+      padding: 14px 14px 10px 14px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .submenu-inner {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .submenu-item {
+      padding: 4px 6px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #1A4B82;
+      margin-bottom: 3px;
+    }
+    .submenu-item:hover {
+      background: #EDF3FF;
+    }
+
+    .content {
+      padding: 22px 26px;
+      overflow-y: auto;
+      background: #FFFFFF;
+    }
+    .content-title {
+      font-size: 22px;
+      margin-bottom: 4px;
+      color: #102A43;
+    }
+    .content-inner {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .content-inner p {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    Jayco Research Tool
+  </div>
+
+  <div class="layout">
+    <!-- LINKS: HOOFDMENU -->
+    <aside class="sidebar">
+      <h3>Main Menu</h3>
+      <div id="mainMenu">
+        <a class="sidebar-item" href="#" data-section="company-registers">company-registers</a>
+        <a class="sidebar-item" href="#" data-section="country-risks">country-risks</a>
+        <a class="sidebar-item" href="#" data-section="industry-risks">industry-risks</a>
+        <a class="sidebar-item" href="#" data-section="laws-regulations-policies">laws-regulations-policies</a>
+        <a class="sidebar-item" href="#" data-section="screening">screening</a>
+        <a class="sidebar-item" href="#" data-section="supervision">supervision</a>
+        <a class="sidebar-item" href="#" data-section="other">other</a>
+        <a class="sidebar-item" href="#" data-section="standaard-teksten">standaard-teksten</a>
+      </div>
+      <div class="helper" style="margin-top:10px; font-size:12px; color:#718096;">
+        Klik een sectie om submenu en tekst te laden.
+      </div>
+    </aside>
+
+    <!-- MIDDEN: SUBMENU-KOLOM (GEEN KOPJE) -->
+    <section class="submenu-wrap">
+      <div id="submenuColumn" class="submenu-inner">
+        <p>Deze kolom is bedoeld voor submenu’s (sectoren, landen, categorieën) zodra je in het linkermenu een sectie kiest.</p>
+      </div>
+    </section>
+
+    <!-- RECHTS: DETAILTEKST -->
+    <main class="content">
+      <div id="contentColumn">
+        <div class="content-title">KCP Research Tool</div>
+        <div class="content-inner">
+          <p>Gebruik het linkermenu om een sectie te kiezen, bijvoorbeeld <strong>Industry Risks</strong> of <strong>Country Risks</strong>.</p>
+          <p>In de middelste kolom zie je dan een submenu (sectoren, regio's, categorieën). In de rechterkolom verschijnt de detailtekst.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Hier definieer je wat er in midden + rechts komt per hoofdmenu-item
+    const sections = {
+      "company-registers": {
+        submenu: `
+          <div class="submenu-inner">
+            <p><strong>Company Registers</strong> – kies een land of register:</p>
+            <div class="submenu-item">Nederland – KVK</div>
+            <div class="submenu-item">België – KBO</div>
+            <div class="submenu-item">Duitsland – Handelsregister</div>
+          </div>
+        `,
+        content: `
+          <div class="content-title">Company Registers</div>
+          <div class="content-inner">
+            <p>Hier kun je uitleg zetten over bronnen voor handelsregisters, UBO-registers, etc.</p>
+          </div>
+        `
+      },
+      "country-risks": {
+        submenu: `
+          <div class="submenu-inner">
+            <p><strong>Country Risks</strong> – voorbeeld categorieën:</p>
+            <div class="submenu-item">Hoog-risico landen (FATF / EU)</div>
+            <div class="submenu-item">Sanctioned countries</div>
+            <div class="submenu-item">Overige verhoogd risico</div>
+          </div>
+        `,
+        content: `
+          <div class="content-title">Country Risks</div>
+          <div class="content-inner">
+            <p>Gebruik deze sectie voor je landenrisico-matrix, CPI-scores, sanctielijsten, etc.</p>
+          </div>
+        `
+      },
+      "industry-risks": {
+        submenu: `
+          <div class="submenu-inner">
+            <p><strong>Industry Risks</strong> – voorbeeld sectoren:</p>
+            <div class="submenu-item">Vastgoed & bouw</div>
+            <div class="submenu-item">Financiële instellingen</div>
+            <div class="submenu-item">Cash-intensieve ondernemingen</div>
+          </div>
+        `,
+        content: `
+          <div class="content-title">Industry Risks</div>
+          <div class="content-inner">
+            <p>Hier komt je sectorspecifieke risico-analyse per branche.</p>
+          </div>
+        `
+      },
+      "laws-regulations-policies": {
+        submenu: `
+          <div class="submenu-inner">
+            <p><strong>Laws / Regulations / Policies</strong> – voorbeeld:</p>
+            <div class="submenu-item">Wwft / Wtt</div>
+            <div class="submenu-item">EU Sanctions</div>
+            <div class="submenu-item">Internal policies</div>
+          </div>
+        `,
+        content: `
+          <div class="content-title">Laws, Regulations & Policies</div>
+          <div class="content-inner">
+            <p>Zet hier je knooppunt naar wetgeving, beleid en guidance documenten.</p>
+          </div>
+        `
+      },
+      "screening": {
+        submenu: `
+          <div class="submenu-inner">
+            <p><strong>Screening</strong> – bronnen / tools:</p>
+            <div class="submenu-item">Dow Jones / Refinitiv</div>
+            <div class="submenu-item">Open source OSINT</div>
+            <div class="submenu-item">Sanctielijsten</div>
+          </div>
+        `,
+        content: `
+          <div class="content-title">Screening</div>
+          <div class="content-inner">
+            <p>Hier kun je je workflow en bronnen voor screening documenteren.</p>
+          </div>
+        `
+      },
+      "supervision": {
+        submenu: `
+          <div class="submenu-inner">
+            <p><strong>Supervision</strong> – toezichthouders:</p>
+            <div class="submenu-item">DNB</div>
+            <div class="submenu-item">AFM</div>
+            <div class="submenu-item">ECB / EBA</div>
+          </div>
+        `,
+        content: `
+          <div class="content-title">Supervision</div>
+          <div class="content-inner">
+            <p>Gebruik dit deel voor informatie over toezichthouders, registers, beleidsuitingen.</p>
+          </div>
+        `
+      },
+      "other": {
+        submenu: `
+          <div class="submenu-inner">
+            <p><strong>Other</strong> – overige bronnen:</p>
+            <div class="submenu-item">Nieuwsbronnen</div>
+            <div class="submenu-item">Onderzoeksrapporten</div>
+          </div>
+        `,
+        content: `
+          <div class="content-title">Other</div>
+          <div class="content-inner">
+            <p>Diverse notities en bronnen die niet direct in de andere categorieën passen.</p>
+          </div>
+        `
+      },
+      "standaard-teksten": {
+        submenu: `
+          <div class="submenu-inner">
+            <p><strong>Standaard-teksten</strong> – voorbeelden:</p>
+            <div class="submenu-item">CDD-rapport inleiding</div>
+            <div class="submenu-item">Risico-paragraaf voorbeeld</div>
+            <div class="submenu-item">Escalatie-memo</div>
+          </div>
+        `,
+        content: `
+          <div class="content-title">Standaard-teksten</div>
+          <div class="content-inner">
+            <p>Hier kun je standaardzinnen en tekstblokken voor je rapporten bewaren.</p>
+          </div>
+        `
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const submenuColumn = document.getElementById('submenuColumn');
+      const contentColumn = document.getElementById('contentColumn');
+
+      document.querySelectorAll('.sidebar-item').forEach(link => {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          const key = this.dataset.section;
+          const section = sections[key];
+          if (!section) return;
+
+          submenuColumn.innerHTML = section.submenu;
+          contentColumn.innerHTML = section.content;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
