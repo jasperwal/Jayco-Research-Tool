@@ -1,124 +1,184 @@
-<!doctype html>
-<html lang="nl">
-  <head>
-    <meta charset="utf-8" />
-    <title>
-      {{ block "title" . }}{{ .Title }} | {{ .Site.Title }}{{ end }}
-    </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    {{ with .Site.Params.description }}
-    <meta name="description" content="{{ . }}" />
-    {{ end }}
-
-    {{ block "head" . }}{{ end }}
-
-    <style>
-      :root {
-        --bg: #f5f5f7;
-        --bg-alt: #ffffff;
-        --fg: #111827;
-        --accent: #2563eb;
-        --accent-soft: #dbeafe;
-        --border-soft: #e5e7eb;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          sans-serif;
-        background: var(--bg);
-        color: var(--fg);
-      }
-
-      a {
-        color: var(--accent);
-        text-decoration: none;
-      }
-
-      a:hover {
-        text-decoration: underline;
-      }
-
-      header {
-        background: #111827;
-        color: #ffffff;
-        padding: 16px 24px;
-      }
-
-      .site-title {
-        font-size: 1.4rem;
-        font-weight: 600;
-      }
-
-      .site-sub {
-        font-size: 0.9rem;
-        opacity: 0.8;
-        margin-top: 4px;
-      }
-
-      nav {
-        margin-top: 12px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        font-size: 0.9rem;
-      }
-
-      nav a {
-        color: #e5e7eb;
-        padding: 4px 10px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.04);
-      }
-
-      nav a:hover {
-        background: rgba(255, 255, 255, 0.12);
-        text-decoration: none;
-      }
-
-      main {
-        max-width: 960px;
-        margin: 24px auto 40px;
-        padding: 0 16px;
-      }
-
-      footer {
-        border-top: 1px solid var(--border-soft);
-        padding: 16px 24px;
-        font-size: 0.8rem;
-        color: #6b7280;
-        text-align: center;
-      }
-    </style>
-  </head>
-
-  <body>
-    <header>
-      <div class="site-title">{{ .Site.Title }}</div>
-      <div class="site-sub">
-        {{ with .Site.Params.tagline }}{{ . }}{{ else }}Jayco Research Tool –
-        KYC/AML kennis & standaardteksten{{ end }}
-      </div>
-
-      <nav>
-        <a href="{{ "/" | relURL }}">Home</a>
-        <a href="{{ "/landen/" | relURL }}">Landenrisico’s</a>
-        <a href="{{ "/sectoren/" | relURL }}">Sectorrisico’s</a>
-        <a href="{{ "/standaard-teksten/" | relURL }}">Standaardteksten</a>
-        <a href="/admin/">Admin</a>
-      </nav>
-    </header>
-
-    <main>
-      {{ block "main" . }}{{ end }}
-    </main>
-
-    <footer>
-      &copy; {{ now.Format "2006" }} {{ .Site.Title }} — interne research tool.
-    </footer>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  body {
+    background: #F3F5FA;
+    color: #1F2933;
+  }
+  .topbar {
+    width: 100%;
+    height: 40px;
+    background: #0A4FFF;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    font-size: 17px;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 220px 280px 1fr;
+    height: calc(100vh - 40px);
+  }
+  .sidebar {
+    background: #F7F9FC;
+    border-right: 1px solid #D8E0F0;
+    padding: 16px 14px;
+  }
+  .sidebar h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #4A5568;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .sidebar-item {
+    display: block;
+    padding: 7px 8px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: #12355B;
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .sidebar-item:hover {
+    background: #E4EDFF;
+  }
+  .sidebar-item.active {
+    background: #D4E2FF;
+    font-weight: 600;
+  }
+  .submenu-wrap {
+    background: #FFFFFF;
+    border-right: 1px solid #E1E7F0;
+    padding: 14px 14px 10px 14px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .submenu-header {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #1A365D;
+  }
+  .search-box {
+    width: 100%;
+    padding: 7px 9px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #CBD5E0;
+    font-size: 14px;
+  }
+  .submenu-scroll {
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .content {
+    padding: 22px 26px;
+    overflow-y: auto;
+  }
+  .content-title {
+    font-size: 22px;
+    margin-bottom: 4px;
+    color: #102A43;
+  }
+  .content-meta {
+    font-size: 13px;
+    color: #6B7280;
+    margin-bottom: 12px;
+  }
+  .content-inner {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .content-inner h2 {
+    font-size: 18px;
+    margin: 10px 0 4px;
+  }
+  .content-inner h3 {
+    font-size: 16px;
+    margin: 8px 0 4px;
+  }
+  .content-inner strong {
+    font-weight: 600;
+  }
+  .content-inner li {
+    margin-left: 18px;
+  }
+  .badge-path {
+    font-size: 11px;
+    color: #9CA3AF;
+    margin-top: 4px;
+  }
+  .helper {
+    font-size: 12px;
+    color: #718096;
+    margin-top: 6px;
+  }
+  /* Collapsible blocks */
+  .sector-block {
+    margin-bottom: 8px;
+    border-bottom: 1px solid #E3E9F5;
+    padding-bottom: 4px;
+  }
+  .sector-header {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #16407A;
+    padding: 6px 4px;
+    cursor: pointer;
+    border-radius: 3px;
+    display: flex;
+    justify-content: space-between;
+    user-select: none;
+  }
+  .sector-header:hover {
+    background: #E4EDFF;
+  }
+  .sector-items {
+    padding-left: 10px;
+    margin-top: 4px;
+  }
+  .sector-items.hidden {
+    display: none;
+  }
+  .submenu-item {
+    padding: 4px 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #1A4B82;
+  }
+  .submenu-item:hover {
+    background: #EDF3FF;
+  }
+  .submenu-item.active {
+    background: #D6E5FF !important;
+    font-weight: 600;
+    border-left: 3px solid #0A4FFF;
+  }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    {{ .Site.Title }}
+  </div>
+  <div class="layout">
+    {{ block "main" . }}{{ end }}
+  </div>
+</body>
 </html>
