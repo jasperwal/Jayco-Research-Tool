@@ -5,7 +5,7 @@
     <title>Jayco Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Extra info voor Decap, mag blijven staan -->
+    <!-- Vertel Decap expliciet waar config.yml staat -->
     <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
 
     <style>
@@ -54,30 +54,6 @@
 
     <!-- Decap CMS (voorheen Netlify CMS) -->
     <script src="https://unpkg.com/decap-cms-app@^3.1.2/dist/decap-cms-app.js"></script>
-
-    <script>
-      // Dwing Decap om /admin/config.yml te gebruiken
-      window.CMS_MANUAL_INIT = true;
-
-      window.addEventListener("load", function () {
-        CMS.init({
-          config: {
-            load_config_file: true,
-            config_path: "/admin/config.yml",
-          },
-        });
-
-        // Optioneel: redirect na login via Netlify Identity
-        if (window.netlifyIdentity) {
-          window.netlifyIdentity.on("init", (user) => {
-            if (!user) {
-              window.netlifyIdentity.on("login", () => {
-                document.location.href = "/admin/";
-              });
-            }
-          });
-        }
-      });
-    </script>
+    <!-- GEEN window.CMS_MANUAL_INIT, GEEN CMS.init(), GEEN config_path -->
   </body>
 </html>
