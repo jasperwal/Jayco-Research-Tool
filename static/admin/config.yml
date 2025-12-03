@@ -1,11 +1,11 @@
-backend:
-  name: git-gateway   # of 'github' als je direct op GitHub inlogt
-  branch: main        # of 'master', afhankelijk van je repo
+ backend:
+  name: git-gateway
+  branch: main
+
+local_backend: false
 
 media_folder: "static/uploads"
 public_folder: "/uploads"
-
-local_backend: true   # handig om lokaal te testen
 
 collections:
   # 1) Standaard teksten in het Nederlands
@@ -13,14 +13,14 @@ collections:
     label: "Standaard texten (NL)"
     label_singular: "Standaard tekst (NL)"
     folder: "content/nl/standaard-teksten"
-    create: false           # we hebben vaste items: samenvatting, deel1, deel2, einde
+    create: false
     slug: "{{slug}}"
     extension: "md"
     fields:
       - { name: "title", label: "Titel", widget: "string" }
       - { name: "body", label: "Tekst", widget: "markdown" }
 
-  # 2) (optioneel alvast klaarzetten) Standaard teksten in het Engels
+  # 2) Standaard teksten in het Engels
   - name: "standard_texts_en"
     label: "Standaard texten (EN)"
     label_singular: "Standaard tekst (EN)"
@@ -31,3 +31,4 @@ collections:
     fields:
       - { name: "title", label: "Title", widget: "string" }
       - { name: "body", label: "Text", widget: "markdown" }
+
