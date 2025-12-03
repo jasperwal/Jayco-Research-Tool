@@ -1,24 +1,27 @@
- {{ define "title" }}Home | Jayco Research Tool{{ end }}
-
-{{ define "submenu" }}
-<section class="submenu-wrap">
-  <div class="submenu-header">Welkom</div>
-  <div class="helper">
-    Deze kolom toont het submenu zodra je een sectie kiest (Industry, Country, etc.).
-  </div>
-</section>
-{{ end }}
-
+{{ define "title" }}Home | {{ .Site.Title }}{{ end }}
 {{ define "main" }}
-<div class="content-title">KCP Research Tool</div>
-<div class="content-inner">
-  <p>
-    Gebruik het linkermenu om een sectie te kiezen, bijvoorbeeld
-    <strong>Industry Risks</strong> of <strong>Country Risks</strong>.
-  </p>
-  <p>
-    In de middelste kolom zie je dan een <em>collapsible</em> submenu
-    (sectoren, regio's, categorieën). In de rechterkolom verschijnt de detailtekst.
-  </p>
-</div>
+  <aside class="sidebar">
+    <h3>Main Menu</h3>
+    <div id="mainMenu">
+      {{ range .Site.Params.mainSections }}
+        <a class="sidebar-item" href="/{{ . }}/">{{ . }}</a>
+      {{ end }}
+    </div>
+    <div class="helper" style="margin-top:10px;">
+      Kies links een sectie om de research tool te gebruiken.
+    </div>
+  </aside>
+
+  <section class="submenu-wrap">
+    <div class="submenu-header">Welkom</div>
+    <div class="helper">Deze kolom toont het submenu zodra je een sectie kiest (Industry, Country, etc.).</div>
+  </section>
+
+  <main class="content">
+    <div class="content-title">Jayco Research Tool</div>
+    <div class="content-inner">
+      <p>Gebruik het linkermenu om een sectie te kiezen, bijvoorbeeld <strong>Industry Risks</strong> of <strong>Country Risks</strong>.</p>
+      <p>In de middelste kolom zie je dan een <em>collapsible</em> submenu (sectoren, regio's, categorieën). In de rechterkolom verschijnt de detailtekst.</p>
+    </div>
+  </main>
 {{ end }}
